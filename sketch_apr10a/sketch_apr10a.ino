@@ -2,8 +2,8 @@
 #include <PubSubClient.h>
 
 // Definizione delle credenziali di rete
-const char* ssid = "TIM-20606483";
-const char* password = "Saio.1210!";
+const char* ssid = "nome wifi";
+const char* password = "password wifi";
 
 // Indirizzo IP del Raspberry Pi che funge da broker MQTT
 const char* mqtt_server = "192.168.18.10";
