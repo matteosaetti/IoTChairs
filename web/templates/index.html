@@ -9,39 +9,41 @@
 </head>
 <body>
 
-<div class="container mt-5">
-    <h1 class="text-center">Esempio di Bottoni Bootstrap</h1>
-    <div class="row mt-4">
-        <div class="col-md-2"></div>
-        <div class="col-md-2 mb-3">
-            <button class="btn btn-primary btn-block">Bottone 1</button>
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">Esempio di Bottoni Bootstrap</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-3 mb-4">
+                <button class="btn btn-primary btn-lg btn-block shadow-sm" onclick="toggleButton(this)">Bottone 1 </button>
+            </div>
+            <div class="col-md-3 mb-4">
+                <button class="btn btn-primary btn-lg btn-block shadow-sm" onclick="toggleButton(this)">Bottone 2 </button>
+            </div>
+            <div class="col-md-3 mb-4">
+                <button class="btn btn-primary btn-lg btn-block shadow-sm" onclick="toggleButton(this)">Bottone 3 </button>
+            </div>
         </div>
-        <div class="col-md-2 mb-3">
-            <button class="btn btn-secondary btn-block">Bottone 2</button>
+        <div class="row justify-content-center">
+            <div class="col-md-3 mb-4">
+                <button class="btn btn-primary btn-lg btn-block shadow-sm" onclick="toggleButton(this)">Bottone 4 </button>
+            </div>
+            <div class="col-md-3 mb-4">
+                <button class="btn btn-primary btn-lg btn-block shadow-sm" onclick="toggleButton(this)">Bottone 5 </button>
+            </div>
+            <div class="col-md-3 mb-4">
+                <button class="btn btn-primary btn-lg btn-block shadow-sm" onclick="toggleButton(this)">Bottone 6 </button>
+            </div>
         </div>
-        <div class="col-md-2 mb-3">
-            <button class="btn btn-success btn-block">Bottone 3</button>
-        </div>
-        <div class="col-md-2 mb-3">
-            <button class="btn btn-danger btn-block">Bottone 4</button>
-        </div>
-        <div class="col-md-2"></div>
     </div>
-    <div class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-2 mb-3">
-            <button class="btn btn-warning btn-block">Bottone 5</button>
-        </div>
-        <div class="col-md-2 mb-3">
-            <button class="btn btn-info btn-block">Bottone 6</button>
-        </div>
-        <div class="col-md-2"></div>
-    </div>
-</div>
-
-<!-- Collegamento a Bootstrap JS e Popper.js -->
+    <!-- Collegamento a Bootstrap JS e Popper.js -->
 <script src="../static/bootstrap/js/jquery.min.js"></script>
 <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+<script>
+    function toggleButton(btn) {
+        btn.classList.toggle('btn-secondary');
+        var status = btn.querySelector('.badge');
 
+        }
+    
+</script>
 </body>
 </html>
