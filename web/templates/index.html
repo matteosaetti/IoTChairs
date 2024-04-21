@@ -58,12 +58,30 @@
           .git-link a:hover {
             color: #0056b3; /* Colore del testo del link al passaggio del mouse */
           }
+          .settings-link {
+            position: absolute; /* Posizione assoluta */
+            top: 20px; /* Distanza dal top */
+            right: 20px; /* Distanza dalla destra */
+          }
+      
+          .settings-link a {
+            color: #fff; /* Colore del testo */
+            text-decoration: none; /* Rimuove la sottolineatura */
+            transition: color 0.3s; /* Transizione del colore */
+          }
+      
+          .settings-link a:hover {
+            color: #ccc; /* Colore del testo al passaggio del mouse */
+          }
     </style>
 </head>
 <body>
+    
     <div class="container mt-5">
         <h1 class="text-center mb-5">Dati Sensori</h1>
-        
+        <div class="settings-link">
+            <a href="settings">Impostazioni</a>
+          </div>
         <div class="sensor-values">
             <div class="row">
             <div class="col-md-6">

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+  <style>
+    /* Stili personalizzati per il layout e il design */
+    body {
+      background-color: #000; /* Sfondo nero */
+      color: #fff; /* Testo bianco */
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.1); /* Colore di sfondo del contenitore con trasparenza */
+      border-radius: 10px; /* Bordi arrotondati */
+      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1); /* Ombra */
+      padding: 20px; /* Spazio interno */
+      margin-top: 50px; /* Margine superiore */
+    }
+
+    .form-group {
+      margin-bottom: 20px; /* Margine inferiore */
+    }
+
+    label {
+      font-weight: bold; /* Testo in grassetto */
+    }
+
+    input[type="number"] {
+      width: 100px; /* Larghezza del campo numerico */
+    }
+
+    /* Stile per i pulsanti */
+    .btn-primary {
+      background-color: #007bff; /* Colore di sfondo */
+      border-color: #007bff; /* Colore del bordo */
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3; /* Colore di sfondo al passaggio del mouse */
+      border-color: #0056b3; /* Colore del bordo al passaggio del mouse */
+    }
+
+    .btn-primary:focus {
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Effetto ombra al focus */
+    }
+
+    .git-link {
+      text-align: center; /* Testo centrato */
+      margin-top: 30px; /* Margine superiore */
+    }
+
+    .git-link a {
+      color: #007bff; /* Colore del testo del link */
+      text-decoration: none; /* Rimuove la sottolineatura */
+      transition: color 0.3s; /* Transizione del colore */
+    }
+
+    .git-link a:hover {
+      color: #0056b3; /* Colore del testo del link al passaggio del mouse */
+    }
+
+    .index-link {
+        position: absolute; /* Posizione assoluta */
+        top: 20px; /* Distanza dal top */
+        left: 20px; /* Distanza dalla sinistra */
+    }
+  
+      .index-link a {
+        color: #fff; /* Colore del testo */
+        text-decoration: none; /* Rimuove la sottolineatura */
+        transition: color 0.3s; /* Transizione del colore */
+    }
+  
+      .index-link a:hover {
+        color: #ccc; /* Colore del testo al passaggio del mouse */
+    }
+      .settings-values {
+        margin-top: 20px; /* Margine superiore */
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1 class="mb-4 text-center">Settings</h1>
+
+  <form id="settingsForm">
+    <div class="form-group">
+      <label for="temperatureThreshold">Temperatura (°C) per attivare i sensori:</label>
+      <input type="number" id="temperatureThreshold" class="form-control" min="0" step="0.5">
+    </div>
+    <div class="form-group">
+      <label for="lightThreshold">Quantità di luce (lux) per attivare i sensori:</label>
+      <input type="number" id="lightThreshold" class="form-control" min="0" step="1">
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Salva</button>
+  </form>
+
+  <div class="settings-values" id="savedSettings">
+    <h4>Valori impostati:</h4>
+    <p>Temperatura: <span id="savedTemperature">--</span> °C</p>
+    <p>Luce: <span id="savedLight">--</span> lux</p>
+  </div>
+</div>
+
+<div class="index-link">
+    <a href="/">Indietro</a>
+</div>
+<div class="git-link">
+    <p><a href="https://github.com/matteosaetti" target="_blank" rel="noopener noreferrer">Visita il mio GitHub</a></p>
+</div>
+</div>
+<script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
+<script>
+    loadSettings();
+
+    function loadSettings() {
+      var savedTemperature = localStorage.getItem('temperatureThreshold');
+      var savedLight = localStorage.getItem('lightThreshold');
+  
+      if (savedTemperature !== null) {
+        $('#temperatureThreshold').val(savedTemperature);
+        $('#savedTemperature').text(savedTemperature);
+      }
+      if (savedLight !== null) {
+        $('#lightThreshold').val(savedLight);
+        $('#savedLight').text(savedLight);
+      }
+    }
+    //TODO: il salvataggio non va. Risolvilo o lascia i valori salvati nelle LineEdit
+    $('#settingsForm').submit(function(event) {
+      event.preventDefault();
+  
+      var temperatureThreshold = $('#temperatureThreshold').val();
+      var lightThreshold = $('#lightThreshold').val();
+  
+      saveSettings(temperatureThreshold, lightThreshold);
+
+    });
+  
+    function saveSettings(temperature, light) {
+    localStorage.setItem('temperatureThreshold', temperature);
+    localStorage.setItem('lightThreshold', light);
+
+    if (localStorage.getItem('temperatureThreshold') === temperature &&
+        localStorage.getItem('lightThreshold') === light) {
+      $('#savedTemperature').text(temperature);
+      $('#savedLight').text(light);
+      alert('Impostazioni salvate con successo!');
+    } else {
+      alert('Si è verificato un errore durante il salvataggio delle impostazioni.');
+    }
+  }
+</script>
+</body>
+</html>
