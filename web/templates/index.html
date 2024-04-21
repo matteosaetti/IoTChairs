@@ -75,10 +75,10 @@
           </div>
           <div class="row">
             <div class="col-md-6">
-              <button class="btn btn-primary btn-lg btn-block shadow-sm" >Presente</button>
+              <button id="chair1" class="btn btn-primary btn-lg btn-block shadow-sm" >Presente</button>
             </div>
             <div class="col-md-6">
-              <button class="btn btn-primary btn-lg btn-block shadow-sm" >Presente</button>
+              <button id="chair2" class="btn btn-primary btn-lg btn-block shadow-sm" >Presente</button>
             </div>
         <div class="row mb-3">
           <div class="col-md-12 sensor-values">
@@ -120,11 +120,14 @@
 <script>
     var lastClickedSensor = null;
 
-    // Funzione per la visualizzazione dei valori dei sensori
     function updateSensorValues(sensorId, value) {
       $('#'+sensorId).text(value);
     }
-  
+    //TODO: manuale e auto devono essere attivabili solo se uno dei due 
+    //sensori(o entrambi) è su Si o se uno o tutti e due i bottoni
+    //sono su presente
+
+    //chair 1 e 2 non si devono disabilitare se cambio da auto a manuale
     function disableSensors() {
         if ($('#manual').hasClass('active')) {
             $('#light').prop('disabled', false);
@@ -190,8 +193,8 @@
         //TODO: elimina
         var temperatureValue = Math.floor(Math.random() * 50) + 20; // Simula una temperatura tra 20°C e 70°C
         var lightValue = Math.floor(Math.random() * 1000); // Simula un valore di luce tra 0 e 1000
-        var pressureValue1 = Math.random() < 0.5 ? "Premuta" : "Non premuta"; // Simula lo stato della sedia 1
-        var pressureValue2 = Math.random() < 0.5 ? "Premuta" : "Non premuta"; // Simula lo stato della sedia 2
+        var pressureValue1 = Math.random() < 0.5 ? "Si" : "No"; // Simula lo stato della sedia 1
+        var pressureValue2 = Math.random() < 0.5 ? "Si" : "No"; // Simula lo stato della sedia 2
         //TODO: elimina
         updateTemperature(temperatureValue + "°C");
         updateLight(lightValue + " lux");
