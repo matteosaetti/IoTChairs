@@ -3,47 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bottoni Bootstrap</title>
-    <!-- Collegamento a Bootstrap CSS -->
+    <title>Gestione Dispositivi</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <style>
+        body {
+            background-color: #000; /* Colore di sfondo */
+            color: #fff;
+          }
+      
+        .container {
+            background-color: rgba(255, 255, 255, 0.1); /* Colore di sfondo del contenitore con trasparenza */
+            border-radius: 10px; /* Bordi arrotondati */
+            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1); /* Ombra */
+            padding: 20px; /* Spazio interno */
+            margin-top: 50px; /* Margine superiore */
+          }
+        .sensor-values {
+        
+          text-align: center;
+          font-size: 24px;
+          color: #fff;
+        }
+        .btn {
+            margin-bottom: 10px; /* Margine inferiore per i bottoni */
+            background-color: #007bff; /* Colore di sfondo */
+            border-color: #007bff; /* Colore del bordo */
+            color: #fff; /* Colore del testo */
+        }
+        .btn:hover {
+            background-color: #0056b3; /* Colore di sfondo al passaggio del mouse */
+            border-color: #0056b3; /* Colore del bordo al passaggio del mouse */
+        }
+      
+        .btn:focus {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Effetto ombra al focus */
+        }
+        
+        /* Stili per i bottoni attivi */
+        .btn.active {
+            background-color: #1e1e1e !important; /* Grigio scuro */
+            border-color: #1e1e1e !important; /* Grigio scuro */
+    }
+        .git-link {
+            text-align: center; /* Testo centrato */
+            margin-top: 30px; /* Margine superiore */
+          }
+      
+          .git-link a {
+            color: #007bff; /* Colore del testo del link */
+            text-decoration: none; /* Rimuove la sottolineatura */
+            transition: color 0.3s; /* Transizione del colore */
+          }
+      
+          .git-link a:hover {
+            color: #0056b3; /* Colore del testo del link al passaggio del mouse */
+          }
+    </style>
 </head>
 <body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-5">Dati Sensori</h1>
+        
+        <div class="sensor-values">
+            <div class="row">
+            <div class="col-md-6">
+              <p>Sedia 1: <span id="pressureValue1">--</span></p>
+            </div>
+            <div class="col-md-6">
+              <p>Sedia 2: <span id="pressureValue2">--</span></p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-primary btn-lg btn-block shadow-sm" >Presente</button>
+            </div>
+            <div class="col-md-6">
+              <button class="btn btn-primary btn-lg btn-block shadow-sm" >Presente</button>
+            </div>
+        <div class="row mb-3">
+          <div class="col-md-12 sensor-values">
+            <p>Temperatura: <span id="temperatureValue">--</span></p>
+            <p>Luce: <span id="lightValue">--</span></p>
+          </div>
+        </div>
 
     <div class="container mt-5">
-        <h1 class="text-center mb-5">Esempio di Bottoni Bootstrap</h1>
+        <h1 class="text-center mb-5">Gestione dispositivi</h1>
         <div class="row justify-content-center">
-            <div class="col-md-3 mb-4">
-                <button class="btn btn-primary btn-lg btn-block shadow-sm" onclick="toggleButton(this)">Bottone 1 </button>
+            <div class="col-md-2 mb-4">
+                <button id="manual" class="btn btn-primary btn-lg btn-block shadow-sm">Manuale</button>
             </div>
-            <div class="col-md-3 mb-4">
-                <button class="btn btn-primary btn-lg btn-block shadow-sm" onclick="toggleButton(this)">Bottone 2 </button>
-            </div>
-            <div class="col-md-3 mb-4">
-                <button class="btn btn-primary btn-lg btn-block shadow-sm" onclick="toggleButton(this)">Bottone 3 </button>
+            <div class="col-md-2 mb-4">
+                <button id="auto" class="btn btn-primary btn-lg btn-block shadow-sm">Automatico</button>
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-md-3 mb-4">
-                <button class="btn btn-primary btn-lg btn-block shadow-sm" onclick="toggleButton(this)">Bottone 4 </button>
+            <div class="col-md-2 mb-4">
+                <button id="light" class="btn btn-primary btn-lg btn-block shadow-sm" disabled>Accendi Luce</button>
             </div>
-            <div class="col-md-3 mb-4">
-                <button class="btn btn-primary btn-lg btn-block shadow-sm" onclick="toggleButton(this)">Bottone 5 </button>
+            <div class="col-md-2 mb-4">
+                <button id="temp" class="btn btn-primary btn-lg btn-block shadow-sm" disabled>Accendi Riscaldamento</button>
             </div>
-            <div class="col-md-3 mb-4">
-                <button class="btn btn-primary btn-lg btn-block shadow-sm" onclick="toggleButton(this)">Bottone 6 </button>
+            <div class="col-md-2 mb-4">
+                <button id="all" class="btn btn-primary btn-lg btn-block shadow-sm" disabled>Accendi Entrambi</button>
             </div>
         </div>
+        
+  <div class="git-link">
+    <p><a href="https://github.com/matteosaetti" target="_blank" rel="noopener noreferrer">Visita il mio GitHub</a></p>
+  </div>
+</div>
     </div>
 
     <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 <script>
-    function toggleButton(btn) {
-        btn.classList.toggle('btn-secondary');
-        var status = btn.querySelector('.badge');
+    var lastClickedSensor = null;
 
+    // Funzione per la visualizzazione dei valori dei sensori
+    function updateSensorValues(sensorId, value) {
+      $('#'+sensorId).text(value);
+    }
+  
+    function disableSensors() {
+        if ($('#manual').hasClass('active')) {
+            $('#light').prop('disabled', false);
+            $('#temp').prop('disabled', false);
+            $('#all').prop('disabled', false);
+        } else {
+            $('#light').prop('disabled', true);
+            $('#temp').prop('disabled', true);
+            $('#all').prop('disabled', true);
         }
-    
-</script>
+    }
+        
+    $(document).ready(function() {
+        $('.btn').click(function() {
+            var clickedSensor = $(this).attr('id');
+            if (clickedSensor == 'manual' || clickedSensor == 'auto') {
+                if (lastClickedSensor == clickedSensor) {
+                    $(this).removeClass('active');
+                    lastClickedSensor = null;
+                } else {
+                    $('.btn.active').removeClass('active');
+                    $(this).addClass('active');
+                    lastClickedSensor = clickedSensor;
+                }
+            }
+            else {
+                $(this).toggleClass('active');
+            }
+            disableSensors();
+        });
+        
+        $('#manual').click(function() {
+            disableSensors();
+        });
+        
+        $('#auto').click(function() {
+            disableSensors();
+        });
+    });
+    //TODO: aggiungi parte per lettura dei sensori
+    //TODO: elimina
+    function updateTemperature(value) {
+      $('#temperatureValue').text(value);
+    }
+  
+    //TODO: elimina
+    function updateLight(value) {
+      $('#lightValue').text(value);
+    }
+    //TODO: elimina
+    function updatePressure1(value) {
+    $('#pressureValue1').text(value);
+    }
+
+    //TODO: elimina
+    function updatePressure2(value) {
+    $('#pressureValue2').text(value);
+    }
+    //TODO: elimina
+    $(document).ready(function() {
+      // Intervallo di aggiornamento simulato
+      setInterval(function() {
+        //TODO: elimina
+        var temperatureValue = Math.floor(Math.random() * 50) + 20; // Simula una temperatura tra 20°C e 70°C
+        var lightValue = Math.floor(Math.random() * 1000); // Simula un valore di luce tra 0 e 1000
+        var pressureValue1 = Math.random() < 0.5 ? "Premuta" : "Non premuta"; // Simula lo stato della sedia 1
+        var pressureValue2 = Math.random() < 0.5 ? "Premuta" : "Non premuta"; // Simula lo stato della sedia 2
+        //TODO: elimina
+        updateTemperature(temperatureValue + "°C");
+        updateLight(lightValue + " lux");
+        updatePressure1(pressureValue1);
+        updatePressure2(pressureValue2);
+      }, 5000); 
+    });
+  </script>
+  
 </body>
 </html>
