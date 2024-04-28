@@ -98,16 +98,10 @@
     </div>
     <button type="submit" class="btn btn-primary btn-block">Salva</button>
   </form>
-
-  <div class="settings-values" id="savedSettings">
-    <h4>Valori impostati:</h4>
-    <p>Temperatura: <span id="savedTemperature">--</span> °C</p>
-    <p>Luce: <span id="savedLight">--</span> lux</p>
-  </div>
 </div>
 
 <div class="index-link">
-    <a href="/">Indietro</a>
+    <a href="/"><img src="images/home.png" style="width: 20px; height: 20px;">Indietro</a>
 </div>
 <div class="git-link">
     <p><a href="https://github.com/matteosaetti" target="_blank" rel="noopener noreferrer">Visita il mio GitHub</a></p>
@@ -130,7 +124,7 @@
         $('#savedLight').text(savedLight);
       }
     }
-    //TODO: il salvataggio non va. Risolvilo o lascia i valori salvati nelle LineEdit
+    
     $('#settingsForm').submit(function(event) {
       event.preventDefault();
   

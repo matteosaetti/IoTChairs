@@ -80,55 +80,53 @@
     <div class="container mt-5">
         <h1 class="text-center mb-5">Dati Sensori</h1>
         <div class="settings-link">
-            <a href="settings">Impostazioni</a>
+            <a href="settings"><img src="images/settings.png" style="width: 20px; height: 20px;">Impostazioni</a>
           </div>
         <div class="sensor-values">
             <div class="row">
             <div class="col-md-6">
-              <p>Sedia 1: <span id="pressureValue1">--</span></p>
+              <p><img src="images/chair.png" style="width: 20px; height: 20px;">Sedia 1: <span id="pressureValue1">--</span></p>
             </div>
             <div class="col-md-6">
-              <p>Sedia 2: <span id="pressureValue2">--</span></p>
+              <p><img src="images/chair.png" style="width: 20px; height: 20px;">Sedia 2: <span id="pressureValue2">--</span></p>
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6">
-              <button id="chair1" class="btn btn-primary btn-lg btn-block shadow-sm" >Presente</button>
-            </div>
-            <div class="col-md-6">
-              <button id="chair2" class="btn btn-primary btn-lg btn-block shadow-sm" >Presente</button>
-            </div>
         <div class="row mb-3">
           <div class="col-md-12 sensor-values">
-            <p>Temperatura: <span id="temperatureValue">--</span></p>
-            <p>Luce: <span id="lightValue">--</span></p>
+            <p><img src="IoTChairs/web/static/images/temp.png" style="width: 20px; height: 20px;">Temperatura: <span id="temperatureValue">--</span></p>
+            <p><img src="images/light.png" style="width: 20px; height: 20px;">Luce: <span id="lightValue">--</span></p>
           </div>
         </div>
 
     <div class="container mt-5">
         <h1 class="text-center mb-5">Gestione dispositivi</h1>
         <div class="row justify-content-center">
-            <div class="col-md-2 mb-4">
+            <div class="col-md-4 mt-3 mr-2">
                 <button id="manual" class="btn btn-primary btn-lg btn-block shadow-sm">Manuale</button>
             </div>
-            <div class="col-md-2 mb-4">
+            <div class="col-md-4 mt-3 mr-2">
                 <button id="auto" class="btn btn-primary btn-lg btn-block shadow-sm">Automatico</button>
             </div>
+            <div class="col-md-8">
+              <hr style="border-top: 3px solid #000;">
+            </div>
         </div>
+        
         <div class="row justify-content-center">
-            <div class="col-md-2 mb-4">
+            <div class="col-md-4 mt-3 mr-2">
                 <button id="light" class="btn btn-primary btn-lg btn-block shadow-sm" disabled>Accendi Luce</button>
             </div>
-            <div class="col-md-2 mb-4">
+            <div class="col-md-4 mt-3 mr-2">
                 <button id="temp" class="btn btn-primary btn-lg btn-block shadow-sm" disabled>Accendi Riscaldamento</button>
             </div>
-            <div class="col-md-2 mb-4">
+            <div class="col-md-4 mt-3 mr-2">
                 <button id="all" class="btn btn-primary btn-lg btn-block shadow-sm" disabled>Accendi Entrambi</button>
             </div>
         </div>
         
   <div class="git-link">
-    <p><a href="https://github.com/matteosaetti" target="_blank" rel="noopener noreferrer">Visita il mio GitHub</a></p>
+    <p><a href="https://github.com/matteosaetti" target="_blank" rel="noopener noreferrer"><img src="../images/github.png" style="width: 20px; height: 20px;">Visita il mio GitHub</a></p>
   </div>
 </div>
     </div>
@@ -141,11 +139,7 @@
     function updateSensorValues(sensorId, value) {
       $('#'+sensorId).text(value);
     }
-    //TODO: manuale e auto devono essere attivabili solo se uno dei due 
-    //sensori(o entrambi) è su Si o se uno o tutti e due i bottoni
-    //sono su presente
-
-    //chair 1 e 2 non si devono disabilitare se cambio da auto a manuale
+    
     function disableSensors() {
         if ($('#manual').hasClass('active')) {
             $('#light').prop('disabled', false);
@@ -176,7 +170,7 @@
             }
             disableSensors();
         });
-        
+
         $('#manual').click(function() {
             disableSensors();
         });
