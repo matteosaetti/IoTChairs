@@ -80,22 +80,22 @@
     <div class="container mt-5">
         <h1 class="text-center mb-5">Dati Sensori</h1>
         <div class="settings-link">
-            <a href="settings"><img src="images/settings.png" style="width: 20px; height: 20px;">Impostazioni</a>
+            <a href="settings">Impostazioni</a>
           </div>
         <div class="sensor-values">
             <div class="row">
             <div class="col-md-6">
-              <p><img src="images/chair.png" style="width: 20px; height: 20px;">Sedia 1: <span id="pressureValue1">--</span></p>
+              <p>Sedia 1: <span id="pressureValue1">--</span></p>
             </div>
             <div class="col-md-6">
-              <p><img src="images/chair.png" style="width: 20px; height: 20px;">Sedia 2: <span id="pressureValue2">--</span></p>
+              <p>Sedia 2: <span id="pressureValue2">--</span></p>
             </div>
           </div>
           <div class="row">
         <div class="row mb-3">
           <div class="col-md-12 sensor-values">
-            <p><img src="IoTChairs/web/static/images/temp.png" style="width: 20px; height: 20px;">Temperatura: <span id="temperatureValue">--</span></p>
-            <p><img src="images/light.png" style="width: 20px; height: 20px;">Luce: <span id="lightValue">--</span></p>
+            <p>Temperatura: <span id="temperatureValue">--</span></p>
+            <p>Luce: <span id="lightValue">--</span></p>
           </div>
         </div>
 
@@ -134,22 +134,29 @@
     <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 <script>
-    var lastClickedSensor = null;
+    var lastClickedSensor = auto;
 
     function updateSensorValues(sensorId, value) {
       $('#'+sensorId).text(value);
     }
-    
     function disableSensors() {
-        if ($('#manual').hasClass('active')) {
+      var pressureValue1 = $('#pressureValue1').text();
+      var pressureValue2 = $('#pressureValue2').text();
+
+          if ($('#manual').hasClass('active')) {
             $('#light').prop('disabled', false);
             $('#temp').prop('disabled', false);
             $('#all').prop('disabled', false);
-        } else {
+            $('#auto').removeClass('active');
+          } else {
+            if (pressureValue1 == 'Si' || pressureValue2 == 'Si' || (pressureValue1 == 'Si' && pressureValue2 == 'Si') ) {
+              $('#auto').addClass('active');
+            }
             $('#light').prop('disabled', true);
             $('#temp').prop('disabled', true);
             $('#all').prop('disabled', true);
         }
+      
     }
         
     $(document).ready(function() {
@@ -212,6 +219,7 @@
         updateLight(lightValue + " lux");
         updatePressure1(pressureValue1);
         updatePressure2(pressureValue2);
+        disableSensors();
       }, 5000); 
     });
   </script>
