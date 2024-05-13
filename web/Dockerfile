@@ -2,14 +2,12 @@ FROM python:3.8-slim
 
 WORKDIR /
 
-COPY common/ /web/app
-
 WORKDIR /web/app
 
-COPY /web/app/requirementsWebApp.txt .
+COPY /web/requirementsWebApp.txt .
 
 RUN pip install -r requirementsWebApp.txt
 
-COPY /web/app .
+COPY /web .
 
 CMD ["python", "app.py"]
