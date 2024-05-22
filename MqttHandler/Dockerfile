@@ -2,6 +2,7 @@ FROM python:3.8-slim
 
 WORKDIR /
 
+
 WORKDIR /MqttHandler/app
 
 COPY /MqttHandler/app/requirementsMqtt.txt .

@@ -1,24 +1,36 @@
 version: '3'
 
 services:
-
   mosquitto:
     image: "eclipse-mosquitto:latest"
     container_name: mosquitto
     networks:
       docker_net:
         ipv4_address: 172.42.0.11
-       #mqtt_net:
+      # mqtt_net:
     ports:
-      - "1883:1883"
+      - "1884:1883"
+      - "9001:9001"
     volumes:
       - ./MqttHandler/config:/mosquitto/config
 
-  web_app:
+
+  mqtt_handler:
+    build:
+      context: .
+      dockerfile: MqttHandler/Dockerfile
+    container_name: MqttHandler
+    networks:
+      - docker_net
+    depends_on:
+      - mosquitto
+
+
+  app:
     build:
       context: .
       dockerfile: web/Dockerfile
-    container_name: web
+    container_name: webApp
     ports:
       - "5000:5000"
     networks:
@@ -26,12 +38,10 @@ services:
     depends_on:
       - mosquitto
 
-
 networks:
   docker_net:
     driver: bridge
     external: true
-  ext_net:
-    external: true
-  # mqtt_net:
-  #   external: true
+    #ipam:
+      #config:
+        #- subnet: 172.42.0.0/16
