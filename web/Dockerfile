@@ -1,8 +1,4 @@
-FROM python:3.8-slim
-
-WORKDIR /
-
-COPY common/ /web/app
+FROM python:3.12-slim
 
 WORKDIR /web/app
 
