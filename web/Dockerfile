@@ -8,5 +8,5 @@ RUN pip install -r requirementsWebApp.txt
 
 COPY /web .
 
-CMD ["python", "app.py"]
+CMD ["python3", "app.py"]
 
