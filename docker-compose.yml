@@ -9,7 +9,6 @@ services:
         ipv4_address: 172.42.0.11
     ports:
       - "1883:1883"
-      - "9001:9001"
     volumes:
       - ./config:/mosquitto/config
 
@@ -27,5 +26,5 @@ services:
 
 networks:
   docker_net:
-    driver: bridge
+    #driver: bridge
     external: true

@@ -1,8 +1,8 @@
 import os
 from flask import Flask, render_template
-
-template_dir = os.path.abspath("templates")
-static_dir   = os.path.abspath("static")
+# docker network create --driver=bridge --subnet=172.42.0.0/24 --gateway=172.42.0.1 docker_net
+template_dir = os.path.abspath("app/templates")
+static_dir   = os.path.abspath("app/static")
 app = Flask(__name__, template_folder=template_dir,static_url_path='', static_folder=static_dir)
 
 @app.route('/')

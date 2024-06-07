@@ -5,75 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestione Dispositivi</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
-    <style>
-        body {
-            background-color: #000; /* Colore di sfondo */
-            color: #fff;
-          }
-      
-        .container {
-            background-color: rgba(255, 255, 255, 0.1); /* Colore di sfondo del contenitore con trasparenza */
-            border-radius: 10px; /* Bordi arrotondati */
-            box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1); /* Ombra */
-            padding: 20px; /* Spazio interno */
-            margin-top: 50px; /* Margine superiore */
-          }
-        .sensor-values {
-        
-          text-align: center;
-          font-size: 24px;
-          color: #fff;
-        }
-        .btn {
-            margin-bottom: 10px; /* Margine inferiore per i bottoni */
-            background-color: #007bff; /* Colore di sfondo */
-            border-color: #007bff; /* Colore del bordo */
-            color: #fff; /* Colore del testo */
-        }
-        .btn:hover {
-            background-color: #0056b3; /* Colore di sfondo al passaggio del mouse */
-            border-color: #0056b3; /* Colore del bordo al passaggio del mouse */
-        }
-      
-        .btn:focus {
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); /* Effetto ombra al focus */
-        }
-        
-        /* Stili per i bottoni attivi */
-        .btn.active {
-            background-color: #1e1e1e !important; /* Grigio scuro */
-            border-color: #1e1e1e !important; /* Grigio scuro */
-    }
-        .git-link {
-            text-align: center; /* Testo centrato */
-            margin-top: 30px; /* Margine superiore */
-          }
-      
-          .git-link a {
-            color: #007bff; /* Colore del testo del link */
-            text-decoration: none; /* Rimuove la sottolineatura */
-            transition: color 0.3s; /* Transizione del colore */
-          }
-      
-          .git-link a:hover {
-            color: #0056b3; /* Colore del testo del link al passaggio del mouse */
-          }
-          .settings-link {
-            position: absolute; /* Posizione assoluta */
-            top: 20px; /* Distanza dal top */
-            right: 20px; /* Distanza dalla destra */
-          }
-      
-          .settings-link a {
-            color: #fff; /* Colore del testo */
-            text-decoration: none; /* Rimuove la sottolineatura */
-            transition: color 0.3s; /* Transizione del colore */
-          }
-      
-          .settings-link a:hover {
-            color: #ccc; /* Colore del testo al passaggio del mouse */
-          }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 </head>
 <body>
     
@@ -131,8 +65,6 @@
 </div>
     </div>
 
-    <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
 <script>
     var lastClickedSensor = auto;
 
