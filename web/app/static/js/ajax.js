@@ -1,6 +1,6 @@
 function ajaxCall(){
-    var pressure1 = document.getElementById("pressureValue1").value
-    var pressure2 = document.getElementById("pressureValue2").value
+    var pressureValue1 = document.getElementById("pressureValue1").value
+    var pressureValue2 = document.getElementById("pressureValue2").value
 
     var temperature = document.getElementById("temperatureValue").value
     var light = document.getElementById("lightValue").value
@@ -9,8 +9,8 @@ function ajaxCall(){
         type: "POST",
         url: "/",
         data: jQuery.param({ 
-            pressure1   : pressure1,
-            pressure2   : pressure2,
+            pressureValue1   : pressureValue1,
+            pressureValue2   : pressureValue2,
             temperature : temperature,
             light       : light,
         }),
