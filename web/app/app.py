@@ -1,75 +1,108 @@
 import os
 from flask import Flask, jsonify, request, render_template
+from flask_socketio import SocketIO
 import json
 import threading
 import time
-import paho.mqtt.client as mqtt
+from paho.mqtt import client as mqtt_client
 #per la network
 # docker network create --driver=bridge --subnet=172.42.0.0/24 --gateway=172.42.0.1 docker_net
+
+
+broker = '192.168.18.24'
+port = 1883
+topic = "topico"
+client_id = f'python-mqtt-xxx'
+
+
+
 template_dir = os.path.abspath("app/templates")
 static_dir   = os.path.abspath("app/static")
+
 app = Flask(__name__, template_folder=template_dir,static_url_path='', static_folder=static_dir)
+socketio = SocketIO(app)
 
-sensor_data = {
-    'pressureValue1': 'No',
-    'pressureValue2': 'No',
-    'light': 0,
-    'temperature': 0
-}
+lock = threading.Lock()
+values_queue = []
 
-def on_connect(client, userdata, flags, rc):
-    print(f"Connesso al broker MQTT con codice {rc}")
-    client.subscribe("sensor/pressureValue1")
-    client.subscribe("sensor/pressureValue2")
-    client.subscribe("sensor/light")
-    client.subscribe("sensor/temperature")
 
-def on_message(client, userdata, msg):
-    global sensor_data
-    try:
-        value = msg.payload.decode()
-        if msg.topic == "sensor/pressureValue1":
-            sensor_data['pressureValue1'] = value
-        elif msg.topic == "sensor/pressureValue2":
-            sensor_data['pressureValue2'] = value
-        elif msg.topic == "sensor/light":
-            sensor_data['light'] = int(value)
-        elif msg.topic == "sensor/temperature":
-            sensor_data['temperature'] = int(value)
-    except ValueError:
-        print(f"Messaggio non è un valore valido: {msg.payload.decode()}")
+def connect_mqtt():
+    def on_connect(client, userdata, flags, rc):
+        if rc == 0:
+            print("Connected to MQTT Broker!", flush=True)
+        else:
+            print("Failed to connect, return code %d\n", rc, flush=True)
+    # Set Connecting Client ID
+    client = mqtt_client.Client(client_id)
+    client.on_connect = on_connect
+    client.connect(broker, port)
+    return client
 
-client = mqtt.Client()
-client.on_connect = on_connect
-client.on_message = on_message
-#TODO capire perchè dà errore
-#client.connect("localhost", 1883, 60)
 
-def mqtt_loop():
-    client.loop_start()
+def publish(client):
+    msg_count = 1
     while True:
         time.sleep(1)
+        msg = f"messages: {msg_count}"
+        result = client.publish(topic, msg)
 
-mqtt_thread = threading.Thread(target=mqtt_loop)
-mqtt_thread.start()
+
+def subscribe(client: mqtt_client):
+    def on_message(client, userdata, msg):
+        mess = msg.payload.decode()#.split(':')[1].split('"')[1]
+        print(f"Received `{mess}` from `{msg.topic}` topic", flush=True)
+        lock.acquire()
+        global values_queue
+        values_queue.append(mess)
+        lock.release()
+        print(values_queue, flush=True)
+
+    client.subscribe(topic)
+    client.on_message = on_message
+
+
+
+def run():
+    client = connect_mqtt()
+    #client.loop_start()
+    #publish(client)
+    subscribe(client)
+    client.loop_forever()
+
+
+
+@socketio.on('message')
+def websocket_message(message):
+    print(f"Arrivatototo: {message}", flush=True)
+
+
+def send_message_websocket():
+    while True:
+        lock.acquire()
+        global values_queue
+        while len(values_queue) > 0:
+            val = values_queue.pop(0)
+            print(f"Sending to websocket: {val}", flush=True)
+            socketio.emit("message", val)
+            time.sleep(0.5)
+        lock.release()
+        time.sleep(2)
+
+
+@socketio.on('connect')
+def websocket_connect():
+    print("Connectato", flush=True)
 
 @app.route('/')
 def home():
+    t = threading.Thread(target=run)
+    t.start()
+
+    t_websocket = threading.Thread(target=send_message_websocket)
+    t_websocket.start()
+
     return render_template("index.html")
 
-@app.route('/sensor', methods=['POST'])
-def get_sensor():
-    data_string = f"{sensor_data['pressureValue1']},{sensor_data['pressureValue2']},{sensor_data['light']},{sensor_data['temperature']}"
-    return jsonify(sensor_data)
-
-@app.route('/settings')
-def settings():
-    return render_template('settings.html')
-
-@app.route('/save_settings', methods=['POST'])
-def save_settings():
-    setting1 = request.form['temperature']
-    setting2 = request.form['light']
-    return jsonify(success=True)
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000)
+    #app.run(host="0.0.0.0", port=5000, threaded=True)
+    socketio.run(app, host="0.0.0.0", allow_unsafe_werkzeug=True)

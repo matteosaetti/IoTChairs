@@ -1,67 +1,100 @@
 body {
-    background-color: #000; 
-    color: #fff;
-  }
+  background-color: #000;
+  color: #fff;
+}
 
 .container {
-    background-color: rgba(255, 255, 255, 0.1); 
-    border-radius: 10px; 
-    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1); 
-    padding: 20px; 
-    margin-top: 50px; 
-  }
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  margin-top: 50px;
+}
 .sensor-values {
-
   text-align: center;
   font-size: 24px;
   color: #fff;
 }
 .btn {
-    margin-bottom: 10px; 
-    background-color: #007bff; 
-    border-color: #007bff; 
-    color: #fff; 
+  margin-bottom: 10px;
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
 }
 .btn:hover {
-    background-color: #0056b3; 
-    border-color: #0056b3; 
+  background-color: #0056b3;
+  border-color: #0056b3;
 }
 
 .btn:focus {
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); 
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
 }
 
-
-.btn.active {
-    background-color: #1e1e1e !important; 
-    border-color: #1e1e1e !important; 
+#mainBtn.active {
+  background-color: #1e1e1e;
+  border-color: #1e1e1e;
 }
 .git-link {
-    text-align: center; 
-    margin-top: 30px; 
-  }
+  text-align: center;
+  margin-top: 30px;
+}
 
-  .git-link a {
-    color: #007bff; 
-    text-decoration: none; 
-    transition: color 0.3s; 
-  }
+.git-link a {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
 
-  .git-link a:hover {
-    color: #0056b3; 
-  }
-  .settings-link {
-    position: absolute; 
-    top: 20px; 
-    right: 20px; 
-  }
+.git-link a:hover {
+  color: #0056b3;
+}
 
-  .settings-link a {
-    color: #fff; 
-    text-decoration: none; 
-    transition: color 0.3s; 
-  }
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 60px;
+  transition: 0.5s;
+  z-index: 1;
+}
 
-  .settings-link a:hover {
-    color: #ccc; 
-  }
+.sidebar a {
+  padding: 15px 8px 15px 16px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #818181;
+  display: block;
+  transition: 0.5s;
+}
+.sidebar a:hover {
+  color: #f1f1f1;
+}
+
+.main {
+  margin-left: 0px;
+  transition: margin-left 0.5s;
+  padding: 0px 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  margin-left: 20px;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="number"] {
+  width: 100px;
+}
+.burger-menu {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1100;
+}

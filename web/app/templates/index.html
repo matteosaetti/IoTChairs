@@ -6,16 +6,37 @@
     <title>Gestione Dispositivi</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='notiflix/notiflix-3.2.7.min.css') }}">
     <script src="{{ url_for('static', filename='bootstrap/js/jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-</head>
-<body>
     
+</head> 
+<body>
+  <div class="burger-menu">
+    <button class="btn btn-dark" id="sidebar-toggle" onclick="toggleSideBar()">
+        <span>&#9776;</span>
+    </button>
+</div>
+  <!-- <button class="openbtn" onclick="toggleSidebar()">☰</button> -->
+    <div class="sidebar" id="sidebar">
+      <form id="settingsForm">
+          <h2 class="mb-4 text-center">Settings</h2>
+        <div class="form-group">
+          <label for="temperatureThreshold">Temperatura (°C):</label>
+          <input type="number" id="temperatureThreshold" class="form-control" min="0" step="0.5">
+        </div>
+        <div class="form-group">
+          <label for="lightThreshold">Quantità di luce (lux):</label>
+          <input type="number" id="lightThreshold" class="form-control" min="0" step="1">
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-block">Salva</button>
+        </div>
+      </form>
+        </div>
+<div class="main" id="main">
     <div class="container mt-5">
         <h1 class="text-center mb-5">Dati Sensori</h1>
-        <div class="settings-link">
-            <a href="settings">Impostazioni</a>
-          </div>
         <div class="sensor-values">
             <div class="row">
             <div class="col-md-6">
@@ -28,8 +49,8 @@
           <div class="row">
         <div class="row mb-3">
           <div class="col-md-12 sensor-values">
-            <p>Temperatura: <span id="temperatureValue">--</span></p>
-            <p>Luce: <span id="lightValue">--</span></p>
+            <p>Temperatura: <span id="temperatureValue">-- °C</span></p>
+            <p>Luce: <span id="lightValue">-- lux</span></p>
           </div>
         </div>
 
@@ -37,10 +58,10 @@
         <h1 class="text-center mb-5">Gestione dispositivi</h1>
         <div class="row justify-content-center">
             <div class="col-md-4 mt-3 mr-2">
-                <button id="manual" class="btn btn-primary btn-lg btn-block shadow-sm">Manuale</button>
+                <button id="manual" class="mainBtn btn btn-primary btn-lg btn-block shadow-sm" onclick="setManual()">Manuale</button>
             </div>
             <div class="col-md-4 mt-3 mr-2">
-                <button id="auto" class="btn btn-primary btn-lg btn-block shadow-sm">Automatico</button>
+                <button id="auto" class="mainBtn btn btn-primary btn-lg btn-block shadow-sm" onclick="setAuto()" >Automatico</button>
             </div>
             <div class="col-md-8">
               <hr style="border-top: 3px solid #000;">
@@ -49,13 +70,13 @@
         
         <div class="row justify-content-center">
             <div class="col-md-4 mt-3 mr-2">
-                <button id="light" class="btn btn-primary btn-lg btn-block shadow-sm" disabled>Accendi Luce</button>
+                <button id="light" class="mainBtn btn btn-primary btn-lg btn-block shadow-sm" onclick="lightClicked()">Accendi Luce</button>
             </div>
             <div class="col-md-4 mt-3 mr-2">
-                <button id="temp" class="btn btn-primary btn-lg btn-block shadow-sm" disabled>Accendi Riscaldamento</button>
+                <button id="temp" class="mainBtn btn btn-primary btn-lg btn-block shadow-sm" onclick="tempClicked()">Accendi Riscaldamento</button>
             </div>
             <div class="col-md-4 mt-3 mr-2">
-                <button id="all" class="btn btn-primary btn-lg btn-block shadow-sm" disabled>Accendi Entrambi</button>
+                <button id="all" class="mainBtn btn btn-primary btn-lg btn-block shadow-sm" onclick="autoClicked()">Accendi Entrambi</button>
             </div>
         </div>
         
@@ -64,98 +85,13 @@
   </div>
 </div>
     </div>
-
-<script>
-    var lastClickedSensor = auto;
-
-    function updateSensorValues(sensorId, value) {
-      $('#'+sensorId).text(value);
-    }
-    function disableSensors() {
-      var pressureValue1 = $('#pressureValue1').text();
-      var pressureValue2 = $('#pressureValue2').text();
-
-          if ($('#manual').hasClass('active')) {
-            $('#light').prop('disabled', false);
-            $('#temp').prop('disabled', false);
-            $('#all').prop('disabled', false);
-            $('#auto').removeClass('active');
-          } else {
-            if (pressureValue1 == 'Si' || pressureValue2 == 'Si' || (pressureValue1 == 'Si' && pressureValue2 == 'Si') ) {
-              $('#auto').addClass('active');
-            }
-            $('#light').prop('disabled', true);
-            $('#temp').prop('disabled', true);
-            $('#all').prop('disabled', true);
-        }
-      
-    }
-        
-    $(document).ready(function() {
-        $('.btn').click(function() {
-            var clickedSensor = $(this).attr('id');
-            if (clickedSensor == 'manual' || clickedSensor == 'auto') {
-                if (lastClickedSensor == clickedSensor) {
-                    $(this).removeClass('active');
-                    lastClickedSensor = null;
-                } else {
-                    $('.btn.active').removeClass('active');
-                    $(this).addClass('active');
-                    lastClickedSensor = clickedSensor;
-                }
-            }
-            else {
-                $(this).toggleClass('active');
-            }
-            disableSensors();
-        });
-
-        $('#manual').click(function() {
-            disableSensors();
-        });
-        
-        $('#auto').click(function() {
-            disableSensors();
-        });
-    });
-    //TODO: aggiungi parte per lettura dei sensori
-    //TODO: elimina
-    function updateTemperature(value) {
-      $('#temperatureValue').text(value);
-    }
-  
-    //TODO: elimina
-    function updateLight(value) {
-      $('#lightValue').text(value);
-    }
-    //TODO: elimina
-    function updatePressure1(value) {
-    $('#pressureValue1').text(value);
-    }
-
-    //TODO: elimina
-    function updatePressure2(value) {
-    $('#pressureValue2').text(value);
-    }
-    //TODO: elimina
-    $(document).ready(function() {
-      // Intervallo di aggiornamento simulato
-      setInterval(function() {
-        //TODO: elimina
-        var temperatureValue = Math.floor(Math.random() * 50) + 20; // Simula una temperatura tra 20°C e 70°C
-        var lightValue = Math.floor(Math.random() * 1000); // Simula un valore di luce tra 0 e 1000
-        var pressureValue1 = Math.random() < 0.5 ? "Si" : "No"; // Simula lo stato della sedia 1
-        var pressureValue2 = Math.random() < 0.5 ? "Si" : "No"; // Simula lo stato della sedia 2
-        //TODO: elimina
-        updateTemperature(temperatureValue + "°C");
-        updateLight(lightValue + " lux");
-        updatePressure1(pressureValue1);
-        updatePressure2(pressureValue2);
-        disableSensors();
-      }, 5000); 
-    });
-  </script>
-  <script src="{{ url_for('static', filename='notiflix/notiflix-aio-3.2.6.min.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/ajax.js') }}"></script>
+  </div>
+  <script src="{{ url_for('static', filename='js/cloudflare.socket.io.js') }}"></script>
+  <script src="{{ url_for('static', filename='notiflix/notiflix-3.2.7.min.js') }}"></script> 
+  <script src="{{ url_for('static', filename='js/websocket.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/readValue.js) }}"></script>
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/sideBar.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
 </body>
 </html>
