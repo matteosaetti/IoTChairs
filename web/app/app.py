@@ -9,7 +9,7 @@ from paho.mqtt import client as mqtt_client
 # docker network create --driver=bridge --subnet=172.42.0.0/24 --gateway=172.42.0.1 docker_net
 
 
-broker = '192.168.18.24'
+broker = '192.168.1.176'
 port = 1883
 topic = "topico"
 client_id = f'python-mqtt-xxx'

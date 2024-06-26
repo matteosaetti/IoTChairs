@@ -4,6 +4,7 @@ const socket = io()
 
 socket.on('message', function(msg) {
     console.log("ecco il messs: "+msg)
+    document.getElementById('temperatureValue').innerHTML = msg + "°C";
 });
 
 function sendMessage() {
