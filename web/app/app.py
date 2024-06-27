@@ -11,7 +11,9 @@ from paho.mqtt import client as mqtt_client
 
 broker = '192.168.1.176'
 port = 1883
-topic = "topico"
+topic ="topico"
+light_topic = "light_status"
+temp_topic = "light_status"
 client_id = f'python-mqtt-xxx'
 
 

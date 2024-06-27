@@ -5,7 +5,8 @@ const char* ssid = "nome wifi";
 const char* password = "password wifi";
 
 const char *mqtt_broker = "ip computer";
-const char *topic = "pressure_status";
+const char *light_topic = "light_status";
+const char *temp_topic = "temp_status";
 const char *mqtt_username = "usr";
 const char *mqtt_password = "";
 const int mqtt_port = 1883;    
@@ -14,8 +15,10 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 void callback(char *topic, byte *payload, unsigned int length) {
-    Serial.print("Message arrived in topic: ");
-    Serial.println(topic);
+    Serial.print("Message arrived in light topic: ");
+    Serial.println(light_topic);
+    Serial.print("Message arrived in temperature topic: ");
+    Serial.println(temp_topic);
     Serial.print("Message:");
     for (int i = 0; i < length; i++) {
         Serial.print((char) payload[i]);
@@ -41,19 +44,17 @@ void callback(char *topic, byte *payload, unsigned int length) {
 //  }
 //}
 
-void connectMQTT() {
-  client.setCallback(callback);
-
-  Serial.print("Connessione al server MQTT ");
+void connectMqtt() {
   while (!client.connected()) {
-    Serial.print("...");
-    if (client.connect(clientID)) {
-      Serial.println("Connesso al server MQTT");
-      client.subscribe("pressure_status");
+    String client_id = "esp32-client-"+String(random(300));
+    client_id += String(WiFi.macAddress());
+    Serial.printf("The client %s connects to the public MQTT broker\n", client_id.c_str());
+    if (client.connect(client_id.c_str(), mqtt_username, mqtt_password)) {
+        Serial.println("Public EMQX MQTT broker connected");
     } else {
-      Serial.print("Errore, stato di connessione: ");
-      Serial.println(client.state());
-      delay(2000);
+        Serial.print("failed with state ");
+        Serial.print(client.state());
+        delay(2000);
     }
   }
 }
