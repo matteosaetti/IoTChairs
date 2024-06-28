@@ -2,7 +2,7 @@ from paho.mqtt import client as mqtt_client
 import time
 from app import get_lock
 
-broker = '192.168.18.24'
+broker = '192.168.1.176'
 port = 1883
 topic ="topico"
 light_topic = "sensor/light"
