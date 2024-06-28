@@ -1,3 +1,4 @@
+//TODO DA REFACTORARE
 function loadSettings() {
   
   var savedTemperature = localStorage.getItem('temperatureThreshold');
