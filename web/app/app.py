@@ -98,13 +98,14 @@ def run():
 #WebSocket Functions
 @socketio.on('buttons')
 def websocket_message(message):
-    print(f"Arrivatototo: {message}", flush=True)
+    print(f"Arrivatototoaaaaaaaaaaaa: {message}", flush=True)
     try:
         topic, value = message.split('=')
         global buttons_queue
+        print(f"{topic}, {value}", flush=True)
         buttons_queue.append((topic, value))
     except ValueError:
-        print(f'Errore nel formato: {message}')
+        print(f'Errore nel formato: {message}', flush=True)
     
 
 @socketio.on('settings')
