@@ -19,7 +19,7 @@
 </div>
   <!-- <button class="openbtn" onclick="toggleSidebar()">☰</button> -->
     <div class="sidebar" id="sidebar">
-      <form id="settingsForm">
+      <form id="settings">
           <h2 class="mb-4 text-center">Settings</h2>
         <div class="form-group">
           <label for="temperatureThreshold">Temperatura (°C):</label>
@@ -30,7 +30,7 @@
           <input type="number" id="lightThreshold" class="form-control" min="0" step="1">
         </div>
         <div class="form-group">
-          <button type="submit" class="btn btn-primary btn-block">Salva</button>
+          <button type="submit" class="btn btn-primary btn-block" onclick="saveSettings()">Salva</button>
         </div>
       </form>
         </div>
@@ -61,7 +61,7 @@
                 <button id="manual" class="mainBtn btn btn-primary btn-lg btn-block shadow-sm" onclick="setManual()">Manuale</button>
             </div>
             <div class="col-md-4 mt-3 mr-2">
-                <button id="auto" class="mainBtn btn btn-primary btn-lg btn-block shadow-sm" onclick="setAuto()" >Automatico</button>
+                <button id="auto" class="mainBtn btn btn-primary btn-lg btn-block shadow-sm" onclick="setAuto()">Automatico</button>
             </div>
             <div class="col-md-8">
               <hr style="border-top: 3px solid #000;">
@@ -76,7 +76,7 @@
                 <button id="temp" class="mainBtn btn btn-primary btn-lg btn-block shadow-sm" onclick="tempClicked()">Accendi Riscaldamento</button>
             </div>
             <div class="col-md-4 mt-3 mr-2">
-                <button id="all" class="mainBtn btn btn-primary btn-lg btn-block shadow-sm" onclick="autoClicked()">Accendi Entrambi</button>
+                <button id="all" class="mainBtn btn btn-primary btn-lg btn-block shadow-sm" onclick="allClicked()">Accendi Entrambi</button>
             </div>
         </div>
         
@@ -89,8 +89,8 @@
   <script src="{{ url_for('static', filename='js/cloudflare.socket.io.js') }}"></script>
   <script src="{{ url_for('static', filename='notiflix/notiflix-3.2.7.min.js') }}"></script> 
   <script src="{{ url_for('static', filename='js/websocket.js') }}"></script>
-  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
   <script src="{{ url_for('static', filename='js/sideBar.js') }}"></script>
   <script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@ from paho.mqtt import client as mqtt_client
 # docker network create --driver=bridge --subnet=172.42.0.0/24 --gateway=172.42.0.1 docker_net
 
 
-broker = '192.168.1.176'
+broker = '192.168.18.24'
 port = 1883
 topic ="topico"
 light_topic = "light_status"
@@ -26,6 +26,10 @@ socketio = SocketIO(app)
 
 lock = threading.Lock()
 values_queue = []
+
+buttons_queue = []
+settings_queue = []
+
 
 #MQTT Functions
 def connect_mqtt():
@@ -45,8 +49,30 @@ def publish(client):
     msg_count = 1
     while True:
         time.sleep(1)
-        msg = f"messages: {msg_count}"
-        result = client.publish(topic, msg)
+        # msg = f"messages: {msg_count}"
+        # result = client.publish(topic, msg)
+        lock.acquire()
+        global buttons_queue
+        global settings_queue
+        
+        while len(buttons_queue) > 0:
+            val = buttons_queue.pop(0)
+            trim_val = val.split('=', 1)
+            topic, value = trim_val
+            print(f"send `{value}` from `{topic}` topic", flush=True)
+            mqtt_client.publish(topic, value)
+            time.sleep(0.5)
+
+        while len(settings_queue) > 0:
+            val = settings_queue.pop(0)
+            trim_val = val.split('=', 1)
+            topic, value = trim_val
+            print(f"send `{value}` from `{topic}` topic", flush=True)
+            mqtt_client.publish(topic, value)
+            time.sleep(0.5)
+        
+        lock.release()
+        time.sleep(2)
 
 
 def subscribe(client: mqtt_client):
@@ -65,17 +91,32 @@ def subscribe(client: mqtt_client):
 
 def run():
     client = connect_mqtt()
-    #client.loop_start()
-    #publish(client)
     subscribe(client)
     client.loop_forever()
 
 
 #WebSocket Functions
-@socketio.on('message')
+@socketio.on('buttons')
 def websocket_message(message):
     print(f"Arrivatototo: {message}", flush=True)
+    try:
+        topic, value = message.split('=')
+        global buttons_queue
+        buttons_queue.append((topic, value))
+    except ValueError:
+        print(f'Errore nel formato: {message}')
+    
 
+@socketio.on('settings')
+def websocket_message(message):
+    print(f"Arrivatototo: {message}", flush=True)
+    try:
+        topic, value = message.split('=')
+        global settings_queue
+        settings_queue.append((topic, value))
+    except ValueError:
+        print(f'Errore nel formato: {message}')
+    
 
 def send_message_websocket():
     while True:
@@ -98,14 +139,15 @@ def websocket_connect():
 
 @app.route('/')
 def home():
-    t = threading.Thread(target=run)
-    t.start()
-
+   
     t_websocket = threading.Thread(target=send_message_websocket)
     t_websocket.start()
 
     return render_template("index.html")
 
+
 if __name__ == '__main__':
-    #app.run(host="0.0.0.0", port=5000, threaded=True)
+    t = threading.Thread(target=run)
+    t.start()
+
     socketio.run(app, host="0.0.0.0", allow_unsafe_werkzeug=True)

@@ -1,95 +1,121 @@
-var isAuto  = true;
+var isAuto = true;
 var lightOn = true;
-var tempOn  = true;
-var autoOn  = true;
-function setAuto(){
-    console.log("auto");
-    isAuto = true;
-    document.getElementById("light").disabled = true;
-    document.getElementById("temp").disabled = true;
-    document.getElementById("all").disabled = true;
-    document.getElementById("auto").disabled = true;
-    document.getElementById("manual").disabled = false;
+var tempOn = true;
+var autoOn = true;
+var allOn = true;
+
+function setAuto() {
+  console.log("auto");
+  isAuto = true;
+  //Auto button
+  document.getElementById("auto").disabled = true;
+  document.getElementById("auto").style.backgroundColor = "#111";
+  document.getElementById("auto").style.borderColor = "#111";
+
+  //Manual button
+  document.getElementById("manual").disabled = false;
+  document.getElementById("manual").style.backgroundColor = "#007bff";
+  document.getElementById("manual").style.borderColor = "#007bff";
+
+  //Light button
+  document.getElementById("light").disabled = true;
+  document.getElementById("light").innerHTML = "Accendi Luce";
+  document.getElementById("light").style.backgroundColor = "#007bff";
+  document.getElementById("light").style.borderColor = "#007bff";
+
+  //Temp button
+  document.getElementById("temp").disabled = true;
+  document.getElementById("temp").innerHTML = "Accendi Riscaldamento";
+  document.getElementById("temp").style.backgroundColor = "#007bff";
+  document.getElementById("temp").style.borderColor = "#007bff";
+
+  //All button
+  document.getElementById("all").disabled = true;
+  document.getElementById("all").innerHTML = "Accendi Entrambi";
+  document.getElementById("all").style.backgroundColor = "#007bff";
+  document.getElementById("all").style.borderColor = "#007bff";
+
+  sendMessage("buttons#autoClicked=1");
 }
-function setManual(){
-    isAuto = false;
-    console.log("manuel");
-    document.getElementById("light").disabled = false;
-    document.getElementById("temp").disabled = false;
-    document.getElementById("all").disabled = false;
-    document.getElementById("auto").disabled = false;
-    document.getElementById("manual").disabled = true;
+
+function setManual() {
+  isAuto = false;
+  lightOn = false;
+  tempOn = false;
+  allOn = false;
+  console.log("manuel");
+
+  //Manual Button
+  document.getElementById("manual").disabled = true;
+  document.getElementById("manual").style.backgroundColor = "#111";
+  document.getElementById("manual").style.borderColor = "#111";
+
+  //Auto button
+  document.getElementById("auto").disabled = false;
+  document.getElementById("auto").style.backgroundColor = "#007bff";
+  document.getElementById("auto").style.borderColor = "#007bff";
+
+  //Other button
+  document.getElementById("light").disabled = false;
+  document.getElementById("temp").disabled = false;
+  document.getElementById("all").disabled = false;
+
+  sendMessage("buttons#manualClicked=1");
 }
-//cambai il colore
-function lightClicked(){
-    lightOn = !lightOn;
-    console.log("light " + lightOn);
-    document.getElementById("light").value = ((lightOn) ? "Accendi Luce" : "Spegni Luce");
+
+function lightClicked() {
+  lightOn = !lightOn;
+  console.log("light " + lightOn);
+
+  if (lightOn) {
+    document.getElementById("light").style.backgroundColor = "#111";
+    document.getElementById("light").style.borderColor = "#111";
+    document.getElementById("light").innerHTML = "Spegni Luce";
+    sendMessage("buttons#lightClicked=1");
+  } else {
+    document.getElementById("light").style.backgroundColor = "#007bff";
+    document.getElementById("light").style.borderColor = "#007bff";
+    document.getElementById("light").innerHTML = "Accendi Luce";
+    sendMessage("buttons#lightClicked=0");
+  }
 }
-function tempClicked(){
-    tempOn = !tempOn;
-    console.log("temp");
-    document.getElementById("temp").disabled = tempOn;
+
+function tempClicked() {
+  tempOn = !tempOn;
+  console.log("temp");
+
+  if (tempOn) {
+    document.getElementById("temp").style.backgroundColor = "#111";
+    document.getElementById("temp").style.borderColor = "#111";
+    document.getElementById("temp").innerHTML = "Spegni Riscaldamento";
+    sendMessage("buttons#tempClicked=1");
+  } else {
+    document.getElementById("temp").style.backgroundColor = "#007bff";
+    document.getElementById("temp").style.borderColor = "#007bff";
+    document.getElementById("temp").innerHTML = "Accendi Riscaldamento";
+    sendMessage("buttons#tempClicked=0");
+  }
 }
-function autoClicked(){
-    autoOn = !autoOn;
-    console.log("auto");
-    document.getElementById("all").disabled = autoOn;
-    document.getElementById("light").disabled = true;
-    document.getElementById("temp").disabled = true;
+
+function allClicked() {
+  allOn = !allOn;
+  console.log("all");
+  document.getElementById("all").disabled = allOn;
+  document.getElementById("light").disabled = true;
+  document.getElementById("temp").disabled = true;
+
+  if (allOn) {
+    document.getElementById("all").style.backgroundColor = "#111";
+    document.getElementById("all").style.borderColor = "#111";
+    document.getElementById("all").innerHTML = "Spegni Entrambi";
+    sendMessage("buttons#allClicked=1");
+  } else {
+    document.getElementById("all").style.backgroundColor = "#007bff";
+    document.getElementById("all").style.borderColor = "#007bff";
+    document.getElementById("all").innerHTML = "Accendi Entrambi";
+    sendMessage("buttons#allClicked=0");
+  }
 }
 console.log("CIAONE");
 setAuto();
-// var lastClickedSensor = auto;
-
-//     function updateSensorValues(sensorId, value) {
-//       $('#'+sensorId).text(value);
-//     }
-//     function disableSensors() {
-//       var pressureValue1 = $('#pressureValue1').text();
-//       var pressureValue2 = $('#pressureValue2').text();
-
-//           if ($('#manual').hasClass('mainBtn') && $('#manual').hasClass('active')) {
-//             $('#light').prop('disabled', false);
-//             $('#temp').prop('disabled', false);
-//             $('#all').prop('disabled', false);
-//             $('#auto').removeClass('active');
-//           } else {
-//             if (pressureValue1 == 'Si' || pressureValue2 == 'Si' || (pressureValue1 == 'Si' && pressureValue2 == 'Si') ) {
-//               $('#auto').addClass('active');
-//             }
-//             $('#light').prop('disabled', true);
-//             $('#temp').prop('disabled', true);
-//             $('#all').prop('disabled', true);
-//         }
-      
-//     }
-        
-//     $(document).ready(function() {
-//         $('.btn').click(function() {
-//             var clickedSensor = $(this).attr('id');
-//             if (clickedSensor == 'manual' || clickedSensor == 'auto') {
-//                 if (lastClickedSensor == clickedSensor) {
-//                     $(this).removeClass('active');
-//                     lastClickedSensor = null;
-//                 } else {
-//                     $('.btn.active').removeClass('active');
-//                     $(this).addClass('active');
-//                     lastClickedSensor = clickedSensor;
-//                 }
-//             }
-//             else {
-//                 $(this).toggleClass('active');
-//             }
-//             disableSensors();
-//         });
-
-//         $('#manual').click(function() {
-//             disableSensors();
-//         });
-        
-//         $('#auto').click(function() {
-//             disableSensors();
-//         });
-//     });
-
+loadSettings();

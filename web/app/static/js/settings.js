@@ -1,39 +1,48 @@
-//TODO DA REFACTORARE
+/*aggiungo listener e prevengo l'invio dei dati e il reload
+prevenire l'evento "submit", il reload della pagina
+e il successivo errore -> webSocket connection to .. failed 
+aggiungendo un listener e preventDefault
+*/
+document
+  .getElementById("settings")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    var temperatureThreshold = document.getElementById(
+      "temperatureThreshold"
+    ).value;
+    var lightThreshold = document.getElementById("lightThreshold").value;
+
+    saveSettings(temperatureThreshold, lightThreshold);
+  });
+var savedLight = 300;
+var savedTemperature = 25;
 function loadSettings() {
-  
-  var savedTemperature = localStorage.getItem('temperatureThreshold');
-    var savedLight = localStorage.getItem('lightThreshold');
-
-    if (savedTemperature !== null) {
-        $('#temperatureThreshold').val(savedTemperature);
-        $('#savedTemperature').text(savedTemperature);
-    }
-    if (savedLight !== null) {
-        $('#lightThreshold').val(savedLight);
-        $('#savedLight').text(savedLight);
-    }
-}
-
-function saveSettings(temperature, light) {
-  localStorage.setItem('temperatureThreshold', temperature);
-  localStorage.setItem('lightThreshold', light);
-
-  if (localStorage.getItem('temperatureThreshold') === temperature &&
-      localStorage.getItem('lightThreshold') === light) {
-    $('#savedTemperature').text(temperature);
-    $('#savedLight').text(light);
-    Notiflix.Report.success('Successo', 'Impostazioni salvate con successo!', 'OK', closeNav());
-  } else {
-    Notiflix.Report.failure('Errore', 'Impossibile salvare le impostazioni.', 'ERROR');
+  if (savedTemperature != null) {
+    document.getElementById("temperatureThreshold").value = savedTemperature;
+  }
+  if (savedLight != null) {
+    document.getElementById("lightThreshold").value = savedLight;
   }
 }
 
-$('#settingsForm').submit(function(event) {
-    event.preventDefault();
-
-    var temperatureThreshold = $('#temperatureThreshold').val();
-    var lightThreshold = $('#lightThreshold').val();
-
-    saveSettings(temperatureThreshold, lightThreshold);
-
-});
+function saveSettings() {
+  temperature =
+    "settings#tempSet=" + document.getElementById("temperatureThreshold").value;
+  light =
+    "settings#lightSet=" + document.getElementById("lightThreshold").value;
+  if (saveAndSendSettings(light, temperature)) {
+    Notiflix.Report.success(
+      "Successo",
+      "Impostazioni salvate con successo!",
+      "OK",
+      closeNav()
+    );
+  } else {
+    Notiflix.Report.failure(
+      "Errore",
+      "Impossibile salvare le impostazioni.",
+      "ERROR"
+    );
+  }
+}
