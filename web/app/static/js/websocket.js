@@ -2,16 +2,6 @@ console.log("partito");
 const socket = io();
 
 //Leggo dal .py
-socket.on("message", function (msg) {
-  console.log("ecco il messs: " + msg);
-  document.getElementById("temperatureValue").innerHTML = msg + "°C";
-});
-
-socket.on("topico", function (msg) {
-  console.log("ecco il messs: " + msg);
-  document.getElementById("temperatureValue").innerHTML = msg + "°C";
-});
-
 socket.on("sensor/temp", function (msg) {
   console.log("ecco il messs: " + msg);
   document.getElementById("temperatureValue").innerHTML = msg + "°C";
