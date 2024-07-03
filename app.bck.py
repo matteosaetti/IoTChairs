@@ -12,8 +12,6 @@ from paho.mqtt import client as mqtt_client
 broker = '192.168.18.24'
 port = 1883
 topic ="topico"
-light_topic = "light_status"
-temp_topic = "light_status"
 client_id = f'python-mqtt-xxx'
 
 
@@ -98,13 +96,14 @@ def run():
 #WebSocket Functions
 @socketio.on('buttons')
 def websocket_message(message):
-    print(f"Arrivatototo: {message}", flush=True)
+    print(f"Arrivatototoaaaaaaaaaaaa: {message}", flush=True)
     try:
         topic, value = message.split('=')
         global buttons_queue
+        print(f"{topic}, {value}", flush=True)
         buttons_queue.append((topic, value))
     except ValueError:
-        print(f'Errore nel formato: {message}')
+        print(f'Errore nel formato: {message}', flush=True)
     
 
 @socketio.on('settings')
@@ -151,3 +150,30 @@ if __name__ == '__main__':
     t.start()
 
     socketio.run(app, host="0.0.0.0", allow_unsafe_werkzeug=True)
+    
+    
+    #-----------------------------------
+    #import os
+#from flask import Flask, render_template
+#from flask_socketio import SocketIO
+#import threading
+#from mqtt_handler import run as run_mqtt
+#from websocket_handler import websocket_message_buttons, websocket_message_settings, send_message_websocket, websocket_connect
+#
+#template_dir = os.path.abspath("app/templates")
+#static_dir   = os.path.abspath("app/static")
+#
+#app = Flask(__name__, template_folder=template_dir, static_url_path='', static_folder=static_dir)
+#socketio = SocketIO(app)
+#
+#@app.route('/')
+#def home():
+#    t_websocket = threading.Thread(target=send_message_websocket)
+#    t_websocket.start()
+#    return render_template("index.html")
+#
+#if __name__ == '__main__':
+#    t = threading.Thread(target=run_mqtt)
+#    t.start()
+#    socketio.run(app, host="0.0.0.0", allow_unsafe_werkzeug=True)
+#

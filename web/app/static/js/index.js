@@ -100,19 +100,30 @@ function tempClicked() {
 function allClicked() {
   allOn = !allOn;
   console.log("all");
-  document.getElementById("all").disabled = allOn;
-  document.getElementById("light").disabled = true;
-  document.getElementById("temp").disabled = true;
 
   if (allOn) {
     document.getElementById("all").style.backgroundColor = "#111";
     document.getElementById("all").style.borderColor = "#111";
     document.getElementById("all").innerHTML = "Spegni Entrambi";
+    
+    document.getElementById("light").disabled = true;
+    document.getElementById("light").style.backgroundColor = "#007bff";
+    document.getElementById("light").style.borderColor = "#007bff";
+    document.getElementById("light").innerHTML = "Accendi Luce";
+    
+    document.getElementById("temp").disabled = true;
+    document.getElementById("temp").style.backgroundColor = "#007bff";
+    document.getElementById("temp").style.borderColor = "#007bff";
+    document.getElementById("temp").innerHTML = "Accendi Riscaldamento";
+
     sendMessage("buttons#all=1");
   } else {
     document.getElementById("all").style.backgroundColor = "#007bff";
     document.getElementById("all").style.borderColor = "#007bff";
     document.getElementById("all").innerHTML = "Accendi Entrambi";
+    
+    document.getElementById("light").disabled = false;
+    document.getElementById("temp").disabled = false;
     sendMessage("buttons#all=0");
   }
 }

@@ -11,9 +11,9 @@ from paho.mqtt import client as mqtt_client
 
 broker = '192.168.18.24'
 port = 1883
-topic ="topico"
-light_topic = "light_status"
-temp_topic = "light_status"
+light_topic = "sensor/light"
+temp_topic = "sensor/temp"
+pressure_topic ="sensor/pressure"
 client_id = f'python-mqtt-xxx'
 
 
@@ -85,7 +85,9 @@ def subscribe(client: mqtt_client):
         lock.release()
         print(values_queue, flush=True)
 
-    client.subscribe(topic)
+    client.subscribe(light_topic)
+    client.subscribe(temp_topic)
+    client.subscribe(pressure_topic)
     client.on_message = on_message
 
 
