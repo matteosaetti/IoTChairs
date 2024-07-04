@@ -52,11 +52,11 @@ def publish(client):
         # msg = f"messages: {msg_count}"
         # result = client.publish(topic, msg)
         lock.acquire()
-        global buttons_queue
+        global sensors_queue
         global settings_queue
         
         while len(buttons_queue) > 0:
-            val = buttons_queue.pop(0)
+            val = sensors_queue.pop(0)
             trim_val = val.split('=', 1)
             topic, value = trim_val
             print(f"send `{value}` from `{topic}` topic", flush=True)
@@ -103,7 +103,7 @@ def websocket_message(message):
     print(f"Arrivatototoaaaaaaaaaaaa: {message}", flush=True)
     try:
         topic, value = message.split('=')
-        global buttons_queue
+        global sensors_queue
         print(f"{topic}, {value}", flush=True)
         buttons_queue.append((topic, value))
     except ValueError:
@@ -117,6 +117,7 @@ def websocket_message(message):
         topic, value = message.split('=')
         global settings_queue
         settings_queue.append((topic, value))
+        print(f"Arrivato mess da : {topic} con contenuto {value}", flush=True)
     except ValueError:
         print(f'Errore nel formato: {message}')
     
@@ -127,11 +128,15 @@ def send_message_websocket():
         global values_queue
         while len(values_queue) > 0:
             val = values_queue.pop(0)
-            trim_val = val.split('#', 1)
-            val_topic, value = trim_val
-            print(f"Sending to websocket: {val}", flush=True)
-            socketio.emit(val_topic, value)
-            time.sleep(0.5)
+            try:
+                trim_val = val.split('#')
+                val_topic, value = trim_val
+                print(f"Sending to websocket: {val}", flush=True)
+                socketio.emit(val_topic, value)
+                time.sleep(0.5)
+            except ValueError:
+                print(f'Errore nel formato: {val}', flush=True)
+
         lock.release()
         time.sleep(2)
 
