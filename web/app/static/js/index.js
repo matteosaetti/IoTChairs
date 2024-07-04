@@ -35,7 +35,7 @@ function setAuto() {
   document.getElementById("all").style.backgroundColor = "#007bff";
   document.getElementById("all").style.borderColor = "#007bff";
 
-  sendMessage("buttons#mode=0");
+  sendMessage("buttons#mode#0");
 }
 
 function setManual() {
@@ -60,7 +60,7 @@ function setManual() {
   document.getElementById("temp").disabled = false;
   document.getElementById("all").disabled = false;
 
-  sendMessage("buttons#mode=1");
+  sendMessage("buttons#mode#1");
 }
 
 function lightClicked() {
@@ -71,12 +71,12 @@ function lightClicked() {
     document.getElementById("light").style.backgroundColor = "#111";
     document.getElementById("light").style.borderColor = "#111";
     document.getElementById("light").innerHTML = "Spegni Luce";
-    sendMessage("buttons#sensor/light=1");
+    sendMessage("buttons#light#1");
   } else {
     document.getElementById("light").style.backgroundColor = "#007bff";
     document.getElementById("light").style.borderColor = "#007bff";
     document.getElementById("light").innerHTML = "Accendi Luce";
-    sendMessage("buttons#sensor/light=0");
+    sendMessage("buttons#light#0");
   }
 }
 
@@ -88,12 +88,12 @@ function tempClicked() {
     document.getElementById("temp").style.backgroundColor = "#111";
     document.getElementById("temp").style.borderColor = "#111";
     document.getElementById("temp").innerHTML = "Spegni Riscaldamento";
-    sendMessage("buttons#sensor/temp=1");
+    sendMessage("buttons#temp#1");
   } else {
     document.getElementById("temp").style.backgroundColor = "#007bff";
     document.getElementById("temp").style.borderColor = "#007bff";
     document.getElementById("temp").innerHTML = "Accendi Riscaldamento";
-    sendMessage("buttons#sensor/temp=0");
+    sendMessage("buttons#temp#0");
   }
 }
 
@@ -116,8 +116,7 @@ function allClicked() {
     document.getElementById("temp").style.borderColor = "#007bff";
     document.getElementById("temp").innerHTML = "Accendi Riscaldamento";
 
-    sendMessage("buttons#sensor/temp=1");
-    sendMessage("buttons#sensor/light=1");
+    sendMessage("buttons#all#1");
   } else {
     document.getElementById("all").style.backgroundColor = "#007bff";
     document.getElementById("all").style.borderColor = "#007bff";
@@ -125,8 +124,7 @@ function allClicked() {
 
     document.getElementById("light").disabled = false;
     document.getElementById("temp").disabled = false;
-    sendMessage("buttons#sensor/temp=0");
-    sendMessage("buttons#sensor/light=0");
+    sendMessage("buttons#all#0");
   }
 }
 console.log("CIAONE");

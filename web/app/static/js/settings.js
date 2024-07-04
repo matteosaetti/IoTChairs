@@ -28,10 +28,10 @@ function loadSettings() {
 
 function saveSettings() {
   temperature =
-    "settings#settings/temp=" +
+    "settings#settings/temp#" +
     document.getElementById("temperatureThreshold").value;
   light =
-    "settings#settings/light=" +
+    "settings#settings/light#" +
     document.getElementById("lightThreshold").value;
   if (saveAndSendSettings(light, temperature)) {
     Notiflix.Report.success(

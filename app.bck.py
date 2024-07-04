@@ -11,7 +11,9 @@ from paho.mqtt import client as mqtt_client
 
 broker = '192.168.18.24'
 port = 1883
-topic ="topico"
+light_topic = "sensor/light"
+temp_topic = "sensor/temp"
+pressure_topic ="sensor/pressure"
 client_id = f'python-mqtt-xxx'
 
 
@@ -44,31 +46,19 @@ def connect_mqtt():
 
 
 def publish(client):
-    msg_count = 1
     while True:
         time.sleep(1)
-        # msg = f"messages: {msg_count}"
-        # result = client.publish(topic, msg)
         lock.acquire()
-        global buttons_queue
-        global settings_queue
-        
         while len(buttons_queue) > 0:
-            val = buttons_queue.pop(0)
-            trim_val = val.split('=', 1)
-            topic, value = trim_val
-            print(f"send `{value}` from `{topic}` topic", flush=True)
-            mqtt_client.publish(topic, value)
+            topic, value = buttons_queue.pop(0)
+            print(f"send `{value}` to `{topic}` topic", flush=True)
+            client.publish(topic, value)
             time.sleep(0.5)
-
         while len(settings_queue) > 0:
-            val = settings_queue.pop(0)
-            trim_val = val.split('=', 1)
-            topic, value = trim_val
-            print(f"send `{value}` from `{topic}` topic", flush=True)
-            mqtt_client.publish(topic, value)
+            topic, value = settings_queue.pop(0)
+            print(f"send `{value}` to `{topic}` topic", flush=True)
+            client.publish(topic, value)
             time.sleep(0.5)
-        
         lock.release()
         time.sleep(2)
 
@@ -83,7 +73,9 @@ def subscribe(client: mqtt_client):
         lock.release()
         print(values_queue, flush=True)
 
-    client.subscribe(topic)
+    client.subscribe(light_topic)
+    client.subscribe(temp_topic)
+    client.subscribe(pressure_topic)
     client.on_message = on_message
 
 
@@ -95,27 +87,44 @@ def run():
 
 #WebSocket Functions
 @socketio.on('buttons')
-def websocket_message(message):
-    print(f"Arrivatototoaaaaaaaaaaaa: {message}", flush=True)
+def websocket_buttons_message(message):
+    print(f"Arrivato: {message}", flush=True)
     try:
-        topic, value = message.split('=')
-        global buttons_queue
-        print(f"{topic}, {value}", flush=True)
-        buttons_queue.append((topic, value))
+        spl = message.split('#')
+        if len(spl) < 2:
+            return
+        topic, value = spl
+        topic_mqtt = None
+        if topic == "light":
+            topic_mqtt = "sensor/light"
+        elif topic == "temp":
+            topic_mqtt = "sensor/temp"
+        elif topic == "all":
+            buttons_queue.append(("sensor/temp", value))    
+            buttons_queue.append(("sensor/light", value))    
+            return
+        elif topic == "mode":
+            topic_mqtt = "mode"
+        if not topic_mqtt: 
+            buttons_queue.append((topic_mqtt, value))
     except ValueError:
-        print(f'Errore nel formato: {message}', flush=True)
-    
+        print(f'Errore nel formatoto: {message}', flush=True)
+
 
 @socketio.on('settings')
-def websocket_message(message):
-    print(f"Arrivatototo: {message}", flush=True)
+def websocket_settings_message(message):
+    print(f"Arrivato: {message}", flush=True)
     try:
-        topic, value = message.split('=')
-        global settings_queue
+        spl = message.split('#')
+        if len(spl) < 2:
+            return
+        topic, value = spl
+        topic, value = message.split('#')
         settings_queue.append((topic, value))
+        print(f"Arrivato mess da : {topic} con contenuto {value}", flush=True)
     except ValueError:
-        print(f'Errore nel formato: {message}')
-    
+        print(f'Errore nel formato: {message}', flush=True)
+
 
 def send_message_websocket():
     while True:
@@ -123,11 +132,15 @@ def send_message_websocket():
         global values_queue
         while len(values_queue) > 0:
             val = values_queue.pop(0)
-            trim_val = val.split('#', 1)
-            val_topic, value = trim_val
-            print(f"Sending to websocket: {val}", flush=True)
-            socketio.emit(val_topic, value)
-            time.sleep(0.5)
+            try:
+                trim_val = val.split('#')
+                val_topic, value = trim_val
+                print(f"Sending to websocket: {val}", flush=True)
+                socketio.emit(val_topic, value)
+                time.sleep(0.5)
+            except ValueError:
+                print(f'Errore nel formato: {val}', flush=True)
+
         lock.release()
         time.sleep(2)
 
@@ -150,30 +163,3 @@ if __name__ == '__main__':
     t.start()
 
     socketio.run(app, host="0.0.0.0", allow_unsafe_werkzeug=True)
-    
-    
-    #-----------------------------------
-    #import os
-#from flask import Flask, render_template
-#from flask_socketio import SocketIO
-#import threading
-#from mqtt_handler import run as run_mqtt
-#from websocket_handler import websocket_message_buttons, websocket_message_settings, send_message_websocket, websocket_connect
-#
-#template_dir = os.path.abspath("app/templates")
-#static_dir   = os.path.abspath("app/static")
-#
-#app = Flask(__name__, template_folder=template_dir, static_url_path='', static_folder=static_dir)
-#socketio = SocketIO(app)
-#
-#@app.route('/')
-#def home():
-#    t_websocket = threading.Thread(target=send_message_websocket)
-#    t_websocket.start()
-#    return render_template("index.html")
-#
-#if __name__ == '__main__':
-#    t = threading.Thread(target=run_mqtt)
-#    t.start()
-#    socketio.run(app, host="0.0.0.0", allow_unsafe_werkzeug=True)
-#

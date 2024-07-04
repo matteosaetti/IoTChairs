@@ -9,7 +9,7 @@ socket.on("sensor/temp", function (msg) {
 
 socket.on("sensor/pressure", function (msg) {
   console.log("ecco il messs: " + msg);
-  const parts = msg.split(".");
+  const parts = msg.split("#");
   const val = parts[1];
   if (msg[0] == "1") {
     if (val == "1") document.getElementById("pressureValue1").innerHTML = "Sì";
@@ -28,11 +28,13 @@ socket.on("sensor/light", function (msg) {
 //Scrivo al .py
 function sendMessage(msg) {
   console.log(msg);
-  var msgTrim = msg.split("#");
-  var from = msgTrim[0];
-  var value = msgTrim[1];
-  console.log("message from " + from + "= " + value);
-  socket.emit(from, value);
+  var msgSplit = msg.split("#");
+  if (msgSplit.length < 3) return;
+  var from = msgSplit[0];
+  var topic = msgSplit[1];
+  var value = msgSplit[2];
+  console.log(msgSplit);
+  socket.emit(from, topic + "#" + value);
 }
 
 function saveAndSendSettings(lightThreshold, tempThreshold) {
@@ -42,15 +44,19 @@ function saveAndSendSettings(lightThreshold, tempThreshold) {
       " Temperature: " +
       tempThreshold
   );
-  var lightTrim = lightThreshold.split("#");
-  var fromLight = lightTrim[0];
-  var valueLight = lightTrim[1];
+  var lightSplit = lightThreshold.split("#");
+  var fromLight = lightSplit[0];
+  var topicLight = lightSplit[1];
+  var valueLight = lightSplit[2];
 
-  var tempTrim = tempThreshold.split("#");
-  var fromTemp = tempTrim[0];
-  var valueTemp = tempTrim[1];
+  var tempSplit = tempThreshold.split("#");
+  var fromTemp = tempSplit[0];
+  var topicTemp = tempSplit[1];
+  var valueTemp = tempSplit[2];
 
-  socket.emit(fromLight, valueLight);
-  socket.emit(fromTemp, valueTemp);
+  console.log(tempSplit);
+  console.log(lightSplit);
+  socket.emit(fromLight, topicLight + "#" + valueLight);
+  socket.emit(fromTemp, topicTemp + "#" + valueTemp);
   return true;
 }
