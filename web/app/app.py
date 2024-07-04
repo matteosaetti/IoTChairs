@@ -27,6 +27,7 @@ def home():
     return render_template("index.html")
 
 if __name__ == '__main__':
+    #exit(0)
     t = threading.Thread(target=run_mqtt_client, args=(values_queue, buttons_queue, settings_queue, lock))
     t.start()
 

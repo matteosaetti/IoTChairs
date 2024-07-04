@@ -54,12 +54,14 @@ void loop() {
   client.loop();
 
   int pressureValue = analogRead(pressureSensorPin);
-
+  String st = "";
   if (pressureValue > pressureThreshold) {
-    client.publish(topic, "#1#1");
+    st = String(topic) + "#1#1";
+    client.publish(topic, st.c_str());
     Serial.println("1");
   } else {
-    client.publish(topic, "#1#0");
+    st = String(topic) + "#1#0";
+    client.publish(topic, st.c_str());
     Serial.println("0");
   }
   delay(500);

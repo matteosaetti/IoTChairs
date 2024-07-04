@@ -4,7 +4,7 @@ const socket = io();
 //Leggo dal .py
 socket.on("sensor/temp", function (msg) {
   console.log("ecco il messs: " + msg);
-  document.getElementById("temperatureValue").innerHTML = msg + "°C";
+  document.getElementById("temperatureValue").innerHTML = msg + " °C";
 });
 
 socket.on("sensor/pressure", function (msg) {
@@ -22,7 +22,7 @@ socket.on("sensor/pressure", function (msg) {
 
 socket.on("sensor/light", function (msg) {
   console.log("ecco il messs: " + msg);
-  document.getElementById("lightValue").innerHTML = msg + "lux";
+  document.getElementById("lightValue").innerHTML = msg + " lux";
 });
 
 //Scrivo al .py

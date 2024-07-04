@@ -127,6 +127,5 @@ function allClicked() {
     sendMessage("buttons#all#0");
   }
 }
-console.log("CIAONE");
 setAuto();
 loadSettings();

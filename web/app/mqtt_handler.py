@@ -2,7 +2,7 @@ import time
 from paho.mqtt import client as mqtt_client
 import threading
 
-broker = '192.168.18.24'
+broker = '192.168.1.114'
 port = 1883
 light_topic = "sensor/light"
 temp_topic = "sensor/temp"
@@ -28,14 +28,16 @@ def publish(client, buttons_queue, settings_queue, lock):
         lock.acquire()
         while len(buttons_queue) > 0:
             spl = buttons_queue.pop(0)
-            topic, value = spl
+            topic = spl[0]
+            value = spl[1]
             print(f"send `{value}` to `{topic}`", flush=True)
             client.publish(topic, value)
             time.sleep(0.2)
             
         while len(settings_queue) > 0:
             spl = settings_queue.pop(0)
-            topic, value = spl
+            topic = spl[0]
+            value = spl[1]
             print(f"send `{value}` to `{topic}`", flush=True)
             client.publish(topic, value)
             time.sleep(0.2)

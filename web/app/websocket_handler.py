@@ -20,6 +20,7 @@ def set_queues(b_queue, s_queue, v_queue, lk):
 def send_message_websocket(values_queue, lock):
     while True:
         lock.acquire()
+        #TODO: fare mappa per il check di topic e valore se duplicato a quello precedente (Se c'è tempo e voglia) forse 2 topic 1 read e 1 write
         while len(values_queue) > 0:
             try:
                 val = values_queue.pop(0)
@@ -27,7 +28,7 @@ def send_message_websocket(values_queue, lock):
                 if len(spl) < 2:
                     continue
                 val_topic = spl[0]
-                value = spl[1] 
+                value = spl[1]
                 print(f"Sending to websocket: {val}", flush=True)
                 socketio.emit(val_topic, value)
                 time.sleep(0.2)
@@ -48,12 +49,12 @@ def websocket_buttons_message(message):
         value = spl[1]
         topic_mqtt = None
         if topic == "light":
-            topic_mqtt = "sensor/light"
+            topic_mqtt = "buttons/light"
         elif topic == "temp":
-            topic_mqtt = "sensor/temp"
+            topic_mqtt = "buttons/temp"
         elif topic == "all":
-            buttons_queue.append(("sensor/temp", value))    
-            buttons_queue.append(("sensor/light", value))    
+            buttons_queue.append(("buttons/temp", value))    
+            buttons_queue.append(("buttons/light", value))    
             return
         elif topic == "mode":
             topic_mqtt = "mode"
