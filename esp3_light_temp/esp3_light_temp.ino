@@ -4,8 +4,8 @@
 const char *ssid = "nome wifi";
 const char *password = "password wifi";
 
-const char *mqtt_server = "192.168.18.10";
-const char *clientID = "ESP32Client2";
+const char *mqtt_server = "192.168.1.175";
+const char *clientID = "ESP32Client3";
 
 const char *topic_mode = "mode";
 const char *topic_light = "sensor/light";
@@ -27,6 +27,9 @@ float lightSet = 300;
 bool lightOn = false;
 bool heatOn = false;
 bool mode = false;
+
+int prevTemp = -1;
+int prevLight = -1;
 
 void callback(char *topic, byte *message, unsigned int length)
 {
@@ -155,25 +158,36 @@ void loop()
   {
     if (lightOn)
     {
+      Serial.println("light on");
+      digitalWrite(2, HIGH);
       digitalWrite(lightPin, HIGH);
     }
     else
     {
+      Serial.println("light off");
       digitalWrite(lightPin, LOW);
     }
     if (heatOn)
     {
+      Serial.println("temp on");
       digitalWrite(heatPin, HIGH);
     }
     else
     {
+      Serial.println("temp off");
       digitalWrite(heatPin, LOW);
     }
   }
-  // client.publish(topic_light, lightOn, sizeof(lightOn));
-  // client.publish(topic_temp, heatOn, sizeOf(heatOn));
-  client.publish(topic_light, String(light).c_str());
-  client.publish(topic_temp, String(temp).c_str());
+  if(light != prevLight){
+    String stLight = String(topic_light) + "#" + light;
+    client.publish(topic_light, stLight.c_str());
+    prevLight = light;
+  }
+  if(temp != prevTemp){
+    String stTemp = String(topic_temp) + "#" + temp;
+    client.publish(topic_temp, stTemp.c_str());
+    prevTemp = temp;
+  }
 
   delay(500);
 }
