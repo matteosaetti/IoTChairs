@@ -1,6 +1,9 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
+#define TEMP_RANGE = 0.5;
+#define LIGHT_RANGE = 20;
+
 const char *ssid = "nome wifi";
 const char *password = "password wifi";
 
@@ -159,7 +162,8 @@ void loop()
     if (lightOn)
     {
       Serial.println("light on");
-      digitalWrite(2, HIGH);
+      // led su esp32
+      // digitalWrite(2, HIGH);
       digitalWrite(lightPin, HIGH);
     }
     else
@@ -178,12 +182,16 @@ void loop()
       digitalWrite(heatPin, LOW);
     }
   }
-  if(light != prevLight){
+
+  if (light <= prevLight - LIGHT_RANGE || light >= prevLight + LIGHT_RANGE)
+  {
     String stLight = String(topic_light) + "#" + light;
     client.publish(topic_light, stLight.c_str());
     prevLight = light;
   }
-  if(temp != prevTemp){
+
+  if (temp <= prevTemp - TEMP_RANGE || temp >= prevTemp + TEMP_RANGE)
+  {
     String stTemp = String(topic_temp) + "#" + temp;
     client.publish(topic_temp, stTemp.c_str());
     prevTemp = temp;
