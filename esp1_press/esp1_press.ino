@@ -1,19 +1,25 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
+#define PRESSURE_THRESHOLD = 500;
 
+//Wi-fi connection data
 const char *ssid = "nome wifi";
 const char *password = "password wifi";
 
+//mqtt server connection data
 const char *mqtt_server = "192.168.18.10";
 const char *clientID = "ESP32Client1";
+
+//topic
 const char *topic = "sensor/pressure";
 
+//ESP32 pin
 const int pressureSensorPin = A0;
-const int pressureThreshold = 500;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+//Wi-fi connection function
 void connectWiFi()
 {
   Serial.println("Connessione alla rete WiFi...");
@@ -26,10 +32,12 @@ void connectWiFi()
   Serial.println("Connessione WiFi stabilita");
 }
 
+//callback function
 void callback(char *topic, byte *payload, unsigned int length)
 {
 }
 
+//Mqtt connection function
 void connectMQTT()
 {
   client.setCallback(callback);
@@ -51,6 +59,7 @@ void connectMQTT()
   }
 }
 
+//Setup function
 void setup()
 {
   Serial.begin(115200);
@@ -59,6 +68,7 @@ void setup()
   connectMQTT();
 }
 
+//Loop function with topic management + publish of pressure values
 void loop()
 {
   if (!client.connected())
@@ -69,7 +79,7 @@ void loop()
 
   int pressureValue = analogRead(pressureSensorPin);
   String st = "";
-  if (pressureValue > pressureThreshold)
+  if (pressureValue > PRESSURE_THRESHOLD)
   {
     st = String(topic) + "#1#1";
     client.publish(topic, st.c_str());

@@ -1,14 +1,15 @@
-console.log("partito");
+console.log("Confirmed connection");
 const socket = io();
 
-//Leggo dal .py
+//Function for reading sensor/temp value from .py
 socket.on("sensor/temp", function (msg) {
-  console.log("ecco il messs: " + msg);
+  console.log("message: " + msg);
   document.getElementById("temperatureValue").innerHTML = msg + " °C";
 });
 
+//Function for reading sensor/pressure value from .py
 socket.on("sensor/pressure", function (msg) {
-  console.log("ecco il messs: " + msg);
+  console.log("message: " + msg);
   const parts = msg.split("#");
   const val = parts[1];
   if (msg[0] == "1") {
@@ -20,12 +21,13 @@ socket.on("sensor/pressure", function (msg) {
   }
 });
 
+//Function for reading sensor/light value from .py
 socket.on("sensor/light", function (msg) {
-  console.log("ecco il messs: " + msg);
+  console.log("message: " + msg);
   document.getElementById("lightValue").innerHTML = msg + " lux";
 });
 
-//Scrivo al .py
+//Function for writing buttons values from .py
 function sendMessage(msg) {
   console.log(msg);
   var msgSplit = msg.split("#");
@@ -37,6 +39,7 @@ function sendMessage(msg) {
   socket.emit(from, topic + "#" + value);
 }
 
+//Function for writing settings values from .py
 function saveAndSendSettings(lightThreshold, tempThreshold) {
   console.log(
     "New Thresholds are setted: Light: " +

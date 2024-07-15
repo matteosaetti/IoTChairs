@@ -10,6 +10,7 @@ settings_queue = None
 values_queue = None
 lock = None
 
+#function for setting queue and lock
 def set_queues(b_queue, s_queue, v_queue, lk):
     global buttons_queue, settings_queue, values_queue, lock
     buttons_queue = b_queue
@@ -17,10 +18,10 @@ def set_queues(b_queue, s_queue, v_queue, lk):
     values_queue = v_queue
     lock = lk
 
+#function for sending message to websocket(py --> js)
 def send_message_websocket(values_queue, lock):
     while True:
         lock.acquire()
-        #TODO: fare mappa per il check di topic e valore se duplicato a quello precedente (Se c'è tempo e voglia) forse 2 topic 1 read e 1 write
         while len(values_queue) > 0:
             try:
                 val = values_queue.pop(0)
@@ -33,14 +34,15 @@ def send_message_websocket(values_queue, lock):
                 socketio.emit(val_topic, value)
                 time.sleep(0.2)
             except ValueError as err:
-                print(f'Errore nel formato: {val} -- {err}', flush=True)
+                print(f'Format error: {val} -- {err}', flush=True)
             
         lock.release()
         time.sleep(2)
 
+#function that received message when buttons is clicked and appends on buttons_queue the message "buttons/topic#value"
 @socketio.on('buttons')
 def websocket_buttons_message(message):
-    print(f"Arrivato: {message}", flush=True)
+    print(f"Message: {message}", flush=True)
     try:
         spl = message.split('#')
         if len(spl) < 2:
@@ -61,11 +63,12 @@ def websocket_buttons_message(message):
         if topic_mqtt != None: 
             buttons_queue.append((topic_mqtt, value))
     except ValueError:
-        print(f'Errore nel formato: {message}', flush=True)
-    
+        print(f'Format error: {message}', flush=True)
+   
+#function that received message when settings are changed and appends on settings_queue the message "settings/topic#value"
 @socketio.on('settings')
 def websocket_settings_message(message):
-    print(f"Arrivato: {message}", flush=True)
+    print(f"Message: {message}", flush=True)
     try:
         spl = message.split('#')
         if len(spl) < 2:
@@ -73,10 +76,11 @@ def websocket_settings_message(message):
         topic = spl[0]
         value = spl[1]
         settings_queue.append((topic, value))
-        print(f"Arrivato mess da : {topic} con contenuto {value}", flush=True)
+        print(f"Arrived message from : {topic} with content: {value}", flush=True)
     except ValueError:
-        print(f'Errore nel formato: {message}', flush=True)
+        print(f'Format error: {message}', flush=True)
 
+#Function that confirm the connection
 @socketio.on('connect')
 def websocket_connect():
-    print("Connesso", flush=True)
+    print("Connect", flush=True)

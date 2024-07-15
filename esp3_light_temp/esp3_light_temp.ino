@@ -4,12 +4,15 @@
 #define TEMP_RANGE = 0.5;
 #define LIGHT_RANGE = 20;
 
+//Wi-fi connection data
 const char *ssid = "nome wifi";
 const char *password = "password wifi";
 
+//mqtt server connection data
 const char *mqtt_server = "192.168.1.175";
 const char *clientID = "ESP32Client3";
 
+//topics
 const char *topic_mode = "mode";
 const char *topic_light = "sensor/light";
 const char *topic_temp = "sensor/temp";
@@ -18,6 +21,7 @@ const char *topic_b_temp = "buttons/temp";
 const char *topic_set_light = "settings/light";
 const char *topic_set_temp = "settings/temp";
 
+//ESP32 pins
 const int lightPin = 32;
 const int heatPin = 33;
 const int tempPin = A0;
@@ -34,6 +38,7 @@ bool mode = false;
 int prevTemp = -1;
 int prevLight = -1;
 
+//callback function for subscribed topics' management
 void callback(char *topic, byte *message, unsigned int length)
 {
   String message_s;
@@ -59,16 +64,15 @@ void callback(char *topic, byte *message, unsigned int length)
   }
   else if (String(topic) == topic_b_light)
   {
-    // char* split = strtok(message_s.toCharArray(), "#");
     lightOn = (message_s.toInt() == 1);
   }
   else if (String(topic) == topic_b_temp)
   {
-    // char* split = strtok(message_s.toCharArray(), "#");
     heatOn = (message_s.toInt() == 1);
   }
 }
 
+//Wi-fi connection function
 void connectWiFi()
 {
   Serial.println("Connessione alla rete WiFi...");
@@ -81,6 +85,7 @@ void connectWiFi()
   Serial.println("Connessione WiFi stabilita");
 }
 
+//Mqtt connection function + subscribe to topics
 void connectMQTT()
 {
   client.setCallback(callback);
@@ -108,6 +113,7 @@ void connectMQTT()
   }
 }
 
+//Setup esp32 function
 void setup()
 {
   Serial.begin(115200);
@@ -123,6 +129,7 @@ void setup()
   connectMQTT();
 }
 
+//Loop function with topics management + publish of temp and light values
 void loop()
 {
   if (!client.connected())
@@ -133,7 +140,7 @@ void loop()
 
   int temp = analogRead(tempPin);
   int light = analogRead(lightPin);
-  // TODO calcolare bene la temp
+
   Serial.println("temp: " + String(temp));
   Serial.println("light: " + String(light));
 

@@ -6,18 +6,20 @@ import threading
 from mqtt_handler import run_mqtt_client
 from websocket_handler import socketio, set_queues, send_message_websocket
 
+#path
 template_dir = os.path.abspath("app/templates")
 static_dir = os.path.abspath("app/static")
 
 app = Flask(__name__, template_folder=template_dir, static_url_path='', static_folder=static_dir)
 socketio.init_app(app)
 
+#Global var
 lock = threading.Lock()
 values_queue = []
 buttons_queue = []
 settings_queue = []
 
-# Pass the queues to the WebSocket server
+#Pass the queues to the WebSocket server
 set_queues(buttons_queue, settings_queue, values_queue, lock)
 
 @app.route('/')

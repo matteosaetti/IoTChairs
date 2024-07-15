@@ -4,6 +4,7 @@ var tempOn = true;
 var autoOn = true;
 var allOn = true;
 
+//Function when auto button is clicked
 function setAuto() {
   console.log("auto");
   isAuto = true;
@@ -38,6 +39,7 @@ function setAuto() {
   sendMessage("buttons#mode#0");
 }
 
+//Function when manual button is clicked
 function setManual() {
   isAuto = false;
   lightOn = false;
@@ -63,6 +65,7 @@ function setManual() {
   sendMessage("buttons#mode#1");
 }
 
+//Function when light button is clicked
 function lightClicked() {
   lightOn = !lightOn;
   console.log("light " + lightOn);
@@ -80,6 +83,7 @@ function lightClicked() {
   }
 }
 
+//Function when temp button is clicked
 function tempClicked() {
   tempOn = !tempOn;
   console.log("temp");
@@ -97,6 +101,7 @@ function tempClicked() {
   }
 }
 
+//Function when all button is clicked
 function allClicked() {
   allOn = !allOn;
   console.log("all");

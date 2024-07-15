@@ -2,14 +2,18 @@ import time
 from paho.mqtt import client as mqtt_client
 import threading
 
+#Mqtt broker
 broker = '192.168.1.114'
 port = 1883
+
+#topic
 light_topic = "sensor/light"
 temp_topic = "sensor/temp"
 pressure_topic = "sensor/pressure"
+
 client_id = f'python-mqtt-xxx'
 
-
+#Mqtt connection function
 def connect_mqtt():
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
@@ -21,7 +25,7 @@ def connect_mqtt():
     client.connect(broker, port)
     return client
 
-
+#Mqtt public function
 def publish(client, buttons_queue, settings_queue, lock):
     while True:
         time.sleep(1)
@@ -45,7 +49,7 @@ def publish(client, buttons_queue, settings_queue, lock):
         lock.release()
         time.sleep(2)
         
-
+#Mqtt subscribe funtion
 def subscribe(client, values_queue, lock):
     def on_message(client, userdata, msg):
         mess = msg.payload.decode()

@@ -1,7 +1,6 @@
-/*aggiungo listener e prevengo l'invio dei dati e il reload
-prevenire l'evento "submit", il reload della pagina
-e il successivo errore -> webSocket connection to .. failed 
-aggiungendo un listener e preventDefault
+/*Add listener to "settings" HTML form for the "submit" event to prevent data sending, reloading
+ of the page and the subsequent error -> "webSocket connection to ... failed.."
+Then save the settings
 */
 document
   .getElementById("settings")
@@ -15,8 +14,11 @@ document
 
     saveSettings(temperatureThreshold, lightThreshold);
   });
+//Global variables
 var savedLight = 300;
 var savedTemperature = 25;
+
+//function for loading save settings
 function loadSettings() {
   if (savedTemperature != null) {
     document.getElementById("temperatureThreshold").value = savedTemperature;
@@ -26,6 +28,7 @@ function loadSettings() {
   }
 }
 
+//function for saving new settings
 function saveSettings() {
   temperature =
     "settings#settings/temp#" +
