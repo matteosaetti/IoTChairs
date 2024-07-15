@@ -1,15 +1,16 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
-#define TEMP_RANGE = 0.5;
-#define LIGHT_RANGE = 20;
+#define TEMP_RANGE 0.5
+#define LIGHT_RANGE 20
 
 //Wi-fi connection data
-const char *ssid = "nome wifi";
-const char *password = "password wifi";
+const char *ssid = "iPhone di saio";
+const char *password = "ciaociao12";
 
 //mqtt server connection data
-const char *mqtt_server = "192.168.1.175";
+//const char *mqtt_server = "192.168.1.175";
+const char *mqtt_server = "172.20.10.5";
 const char *clientID = "ESP32Client3";
 
 //topics
@@ -190,14 +191,14 @@ void loop()
     }
   }
 
-  if (light <= prevLight - LIGHT_RANGE || light >= prevLight + LIGHT_RANGE)
+  if (light <= (prevLight - LIGHT_RANGE) || light >= (prevLight + LIGHT_RANGE))
   {
     String stLight = String(topic_light) + "#" + light;
     client.publish(topic_light, stLight.c_str());
     prevLight = light;
   }
 
-  if (temp <= prevTemp - TEMP_RANGE || temp >= prevTemp + TEMP_RANGE)
+  if (temp <= (prevTemp - TEMP_RANGE) || temp >= (prevTemp + TEMP_RANGE))
   {
     String stTemp = String(topic_temp) + "#" + temp;
     client.publish(topic_temp, stTemp.c_str());

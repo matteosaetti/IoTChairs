@@ -3,7 +3,7 @@ from paho.mqtt import client as mqtt_client
 import threading
 
 #Mqtt broker
-broker = '192.168.1.114'
+broker = '172.20.10.5'
 port = 1883
 
 #topic

@@ -1,13 +1,13 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
-#define PRESSURE_THRESHOLD = 500;
+#define PRESSURE_THRESHOLD 500
 //Wi-fi connection data
-const char *ssid = "nome wifi";
-const char *password = "password wifi";
+const char *ssid = "iPhone di saio";
+const char *password = "ciaociao12";
 
 //mqtt server connection data
-const char *mqtt_server = "192.168.18.10";
+const char *mqtt_server = "172.20.10.5";
 const char *clientID = "ESP32Client2";
 
 //topic
@@ -93,6 +93,5 @@ void loop()
     client.publish(topic, st.c_str());
     Serial.println("0");
   }
-}
 delay(500);
 }
