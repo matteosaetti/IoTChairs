@@ -3,18 +3,16 @@
 #define PRESSURE_THRESHOLD 500
 
 //Wi-fi connection data
-const char *ssid = "iPhone di saio";
-const char *password = "ciaociao12";
-
 //mqtt server connection data
-const char *mqtt_server = "172.20.10.5";
+//const char *mqtt_server = "172.20.10.5";
+const char *mqtt_server = "192.168.1.175";
 const char *clientID = "ESP32Client1";
 
 //topic
 const char *topic = "sensor/pressure";
 
 //ESP32 pin
-const int pressureSensorPin = A0;
+const int pressureSensorPin = 34;
 
 WiFiClient espClient;
 PubSubClient client(espClient);
