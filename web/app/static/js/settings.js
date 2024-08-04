@@ -15,7 +15,7 @@ document
     saveSettings(temperatureThreshold, lightThreshold);
   });
 //Global variables
-var savedLight = 300;
+var savedLight = 50;
 var savedTemperature = 25;
 
 //function for loading save settings

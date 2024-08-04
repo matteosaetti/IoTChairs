@@ -24,7 +24,7 @@ socket.on("sensor/pressure", function (msg) {
 //Function for reading sensor/light value from .py
 socket.on("sensor/light", function (msg) {
   console.log("message: " + msg);
-  document.getElementById("lightValue").innerHTML = msg + " lux";
+  document.getElementById("lightValue").innerHTML = msg + " %";
 });
 
 //Function for writing buttons values from .py

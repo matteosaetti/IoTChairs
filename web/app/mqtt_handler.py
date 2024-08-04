@@ -3,8 +3,8 @@ from paho.mqtt import client as mqtt_client
 import threading
 
 #Mqtt broker
-#broker = '172.20.10.5'
-broker = '192.168.1.175'
+broker = '172.20.10.5'
+#broker = '192.168.1.175'
 port = 1883
 
 #topic
@@ -36,6 +36,9 @@ def publish(client, buttons_queue, settings_queue, lock):
             topic = spl[0]
             value = spl[1]
             print(f"send `{value}` to `{topic}`", flush=True)
+            if value == "0" and topic == "mode":
+                client.publish("buttons/light", "0")
+                client.publish("buttons/temp", "0")
             client.publish(topic, value)
             time.sleep(0.2)
             

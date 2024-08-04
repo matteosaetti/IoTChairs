@@ -3,9 +3,13 @@
 #define PRESSURE_THRESHOLD 500
 
 //Wi-fi connection data
+const char *ssid = "iPhone di saio";
+const char *password = "ciaociao12";
+//const char *ssid = "TIM-20606483";
+//const char *password = "Saio1210!";
 //mqtt server connection data
-//const char *mqtt_server = "172.20.10.5";
-const char *mqtt_server = "192.168.1.175";
+const char *mqtt_server = "172.20.10.5";
+//const char *mqtt_server = "192.168.1.175";
 const char *clientID = "ESP32Client1";
 
 //topic
@@ -17,6 +21,7 @@ const int pressureSensorPin = 34;
 WiFiClient espClient;
 PubSubClient client(espClient);
 
+int prevPressure = -1;
 //Wi-fi connection function
 void connectWiFi()
 {
@@ -76,18 +81,23 @@ void loop()
   client.loop();
 
   int pressureValue = analogRead(pressureSensorPin);
+  int press = -1;
   String st = "";
   if (pressureValue > PRESSURE_THRESHOLD)
   {
     st = String(topic) + "#1#1";
-    client.publish(topic, st.c_str());
     Serial.println("1");
+    press = 1;
   }
   else
   {
     st = String(topic) + "#1#0";
-    client.publish(topic, st.c_str());
     Serial.println("0");
+    press = 0;
+  }
+  if(prevPressure != press){
+    client.publish(topic, st.c_str());
+    prevPressure = press;
   }
   delay(500);
 }
